@@ -4,6 +4,13 @@ const chalk = require('chalk');
 const yosay = require('yosay');
 const mkdirp = require('mkdirp');
 const path = require('path');
+const _ = require('lodash');
+
+const formateName = ( name ) => {
+  name = _.kebabCase(name);
+  name = name.indexOf('generator-') === 0 ? name : 'generator-' + name;
+  return name;
+}
 
 module.exports = class extends Generator {
   prompting() {
@@ -28,75 +35,49 @@ module.exports = class extends Generator {
     ];
 
     return this.prompt(prompts).then(props => {
-      // To access props later use this.props.someAnswer;
       this.props = props;
     });
   }
 
-  writing() {
-    // Role folder
-    // TODO make this folder the name of the role
+  default() {
+    // Create all folders needed
+
+    // Folder root
     const roleRoot = `./${this.props.roleName}`
     mkdirp.sync(roleRoot);
 
-    // Defaults folder
+    // DEFAULTS
     mkdirp.sync(path.join(roleRoot + '/defaults'));
-    this.fs.copy(
-      this.templatePath('defaults'),
-      this.destinationPath(path.join(roleRoot, 'defaults'))
-    )
 
-    // Handlers folder
+    // HANDLERS
     mkdirp.sync(path.join(roleRoot + '/handlers'));
-    this.fs.copy(
-      this.templatePath('handlers'),
-      this.destinationPath(path.join(roleRoot, 'handlers'))
-    )
 
-    // Meta folder
-    if (this.props.includeMeta) {
+    // META
+    if ( this.props.includeMeta) {
       mkdirp.sync(path.join(roleRoot + '/meta'));
-      this.fs.copy(
-        this.templatePath('meta'),
-        this.destinationPath(path.join(roleRoot, 'meta'))
-      )
     }
 
-    // Molecule folder
-    mkdirp.sync(path.join(roleRoot + '/molecule'));
-    this.fs.copy(
-      this.templatePath('molecule'),
-      this.destinationPath(path.join(roleRoot, 'molecule'))
-    )
+    // MOLECULE
+    mkdirp.sync(path.join(roleRoot + '/molecule/default/tests'));
+    const playbookTemplate = _.template(this.fs.read(this.templatePath('molecule/default/playbook.yml')))
+    this.fs.write(path.join(roleRoot, 'molecule/default/playbook.yml'), playbookTemplate({
+      roleName: this.props.roleName
+    }))
 
-    // Tasks folder
+    // TASKS
     mkdirp.sync(path.join(roleRoot + '/tasks'));
-    this.fs.copy(
-      this.templatePath('tasks'),
-      this.destinationPath(path.join(roleRoot, 'tasks'))
-    )
 
-    // Vars folder
+    // VARS
     mkdirp.sync(path.join(roleRoot + '/vars'));
-    this.fs.copy(
-      this.templatePath('vars'),
-      this.destinationPath(path.join(roleRoot, 'vars'))
-    )
 
-    // Loose files
-    // Regular files
-    this.fs.copy(
-      this.templatePath('loose-files'),
-      this.destinationPath(roleRoot)
-    )
-    // Dotfiles
-    this.fs.copy(
-      this.templatePath('loose-files/.*'),
-      this.destinationPath(roleRoot)
-    )
+
+  }
+
+  writing() {
+    // TODO WRITE THE PACKAGE.JSON
   }
 
   install() {
-    // this.installDependencies();
+    // this.installDependencies({bower: false});
   }
 };

@@ -8,6 +8,7 @@
   "dependencies": {
     "bower": "^1.8.8",
     "chalk": "^2.4.2",
+    "lodash": "^4.17.11",
     "mkdirp": "^0.5.1",
     "yeoman-generator": "^3.2.0",
     "yosay": "^2.0.2"
