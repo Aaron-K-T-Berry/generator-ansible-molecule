@@ -1,0 +1,18 @@
+{
+  "name": "ROLE_NAME_HERE",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "GET_FROM_YO",
+  "license": "MIT",
+  "dependencies": {},
+  "scripts": {
+    "venv": "virtualenv venv",
+    "venv-activate": "source venv/bin/activate",
+    "requirements": "pip install -r requirements.txt", 
+    "syntax": "molecule syntax",
+    "lint": "molecule lint",
+    "converge": "molecule converge",
+    "test": "molecule test",
+    "destroy": "molecule destory"
+  }
+}
