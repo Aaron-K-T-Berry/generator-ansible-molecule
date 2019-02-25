@@ -1,5 +1,4 @@
 ---
-# TODO have the role filled in dynamically
 - name: Converge
   hosts: all
   roles:

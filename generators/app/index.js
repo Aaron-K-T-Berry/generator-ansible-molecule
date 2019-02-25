@@ -40,37 +40,51 @@ module.exports = class extends Generator {
   }
 
   default() {
-    // Create all folders needed
-
     // Folder root
     const roleRoot = `./${this.props.roleName}`
     mkdirp.sync(roleRoot);
 
     // DEFAULTS
-    mkdirp.sync(path.join(roleRoot + '/defaults'));
+    mkdirp.sync(path.join(roleRoot, 'defaults'));
+    this.fs.copy(
+      this.templatePath('defaults'),
+      path.join(roleRoot, 'defaults')
+    )
 
     // HANDLERS
-    mkdirp.sync(path.join(roleRoot + '/handlers'));
+    mkdirp.sync(path.join(roleRoot, 'handlers'));
+    this.fs.copy(
+      this.templatePath('handlers'),
+      path.join(roleRoot, 'handlers')
+    )
 
     // META
     if ( this.props.includeMeta) {
-      mkdirp.sync(path.join(roleRoot + '/meta'));
+      mkdirp.sync(path.join(roleRoot, 'meta'));
+      // TODO template meta file
     }
 
     // MOLECULE
-    mkdirp.sync(path.join(roleRoot + '/molecule/default/tests'));
+    // TODO copy other files to destination
+    mkdirp.sync(path.join(roleRoot, 'molecule/default/tests'));
     const playbookTemplate = _.template(this.fs.read(this.templatePath('molecule/default/playbook.yml')))
     this.fs.write(path.join(roleRoot, 'molecule/default/playbook.yml'), playbookTemplate({
       roleName: this.props.roleName
     }))
 
     // TASKS
-    mkdirp.sync(path.join(roleRoot + '/tasks'));
+    mkdirp.sync(path.join(roleRoot, 'tasks'));
+    this.fs.copy(
+      this.templatePath('tasks'),
+      path.join(roleRoot, 'tasks')
+    )
 
     // VARS
-    mkdirp.sync(path.join(roleRoot + '/vars'));
-
-
+    mkdirp.sync(path.join(roleRoot, 'vars'));
+    this.fs.copy(
+      this.templatePath('vars'),
+      path.join(roleRoot, 'vars')
+    )
   }
 
   writing() {
