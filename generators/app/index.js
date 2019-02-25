@@ -21,9 +21,9 @@ module.exports = class extends Generator {
       },
       {
         type: 'confirm',
-        name: 'meta_folder',
+        name: 'includeMeta',
         message: 'Would you like to include the meta folder?',
-        default: true
+        default: false
       }
     ];
 
@@ -54,11 +54,13 @@ module.exports = class extends Generator {
     )
 
     // Meta folder
-    mkdirp.sync(path.join(roleRoot + '/meta'));
-    this.fs.copy(
-      this.templatePath('meta'),
-      this.destinationPath(path.join(roleRoot, 'meta'))
-    )
+    if (this.props.includeMeta) {
+      mkdirp.sync(path.join(roleRoot + '/meta'));
+      this.fs.copy(
+        this.templatePath('meta'),
+        this.destinationPath(path.join(roleRoot, 'meta'))
+      )
+    }
 
     // Molecule folder
     mkdirp.sync(path.join(roleRoot + '/molecule'));
