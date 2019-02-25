@@ -1,0 +1,8 @@
+{
+  "name": "generator-ansible",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Aaron-K-T-Berry/generator-ansible.git",
+  "author": "aaron <aaron.abm@gmail.com>",
+  "license": "MIT"
+}
