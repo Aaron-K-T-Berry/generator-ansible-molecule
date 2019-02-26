@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: <%- authorName %>
-  description: <%- metaDescription %>
+  description: <%- description %>
   company: <%- metaCompany %>
 
   # If the issue tracker for your role is not on github, uncomment the
