@@ -77,11 +77,11 @@ module.exports = class extends Generator {
       this.props = props;
 
       // Formatting some props
-      this.props.roleName = _.kebabCase(this.props.roleName);
+      // this.props.roleName = _.kebabCase(this.props.roleName);
     });
   }
 
-  default() {
+  default() {    
     // Folder root
     const roleRoot = `./${this.props.roleName}`;
     this.props.roleRoot = roleRoot;
@@ -120,22 +120,6 @@ module.exports = class extends Generator {
     mkdirp.sync(path.join(roleRoot, "handlers"));
     this.fs.copy(this.templatePath("handlers"), path.join(roleRoot, "handlers"));
 
-    // META
-    if (this.props.includeMeta) {
-      mkdirp.sync(path.join(roleRoot, "meta"));
-      const metaTemplate = _.template(this.fs.read(this.templatePath("meta/main.yml")));
-      this.fs.write(
-        path.join(roleRoot, "meta/main.yml"),
-        metaTemplate({
-          authorName: this.props,
-          authorName: this.props.authorName,
-          description: this.props.description,
-          metaCompany: this.props.metaCompany,
-          metaLicence: getLicenseValue(this.props.metaLicense)
-        })
-      );
-    }
-
     // MOLECULE
     mkdirp.sync(path.join(roleRoot, "molecule/default/tests"));
     this.fs.copy(this.templatePath("molecule"), path.join(roleRoot, "molecule"));
@@ -148,7 +132,6 @@ module.exports = class extends Generator {
         roleName: this.props.roleName
       })
     );
-
     // TASKS
     mkdirp.sync(path.join(roleRoot, "tasks"));
     this.fs.copy(this.templatePath("tasks"), path.join(roleRoot, "tasks"));
@@ -159,6 +142,20 @@ module.exports = class extends Generator {
   }
 
   writing() {
+    if (this.props.includeMeta) {
+      const metaTemplate = _.template(this.fs.read(this.templatePath('meta/main.yml')))
+      this.fs.write(
+        path.join(this.props.roleName, "meta/main.yml"),
+        metaTemplate({
+          authorName: this.props,
+          authorName: this.props.authorName,
+          description: this.props.description,
+          metaCompany: this.props.metaCompany,
+          metaLicence: getLicenseValue(this.props.metaLicense)
+        })
+      );
+    }
+    
     const pkgTemplate = {
       name: this.props.roleName,
       version: "1.0.0",
@@ -195,15 +192,7 @@ module.exports = class extends Generator {
 
   install() {
     // Fixing permissions
-    exec(
-      `chmod +x ${path.join(this.destinationRoot(), this.props.roleRoot, "run-test.sh")}`,
-      (err, stdout, stderr) => {
-        if (err || stderr) {
-          console.log("ERR", err);
-          console.log("STDERR", stderr);
-        }
-      }
-    );
+    exec(`chmod +x ${path.join(this.destinationRoot(), this.props.roleRoot, "run-test.sh")}`);
     // this.installDependencies({ bower: false });
   }
 };
