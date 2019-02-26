@@ -5,12 +5,30 @@ const yosay = require("yosay");
 const mkdirp = require("mkdirp");
 const path = require("path");
 const _ = require("lodash");
+const exec = require("child_process").exec;
+const gitConfig = require("git-config");
 
-const formatName = name => {
-  name = _.kebabCase(name);
-  name = name.indexOf("generator-") === 0 ? name : "generator-" + name;
-  return name;
-};
+const licenses = [
+  { name: "Apache 2.0", value: "Apache-2.0" },
+  { name: "MIT", value: "MIT" },
+  { name: "Mozilla Public License 2.0", value: "MPL-2.0" },
+  { name: "BSD 2-Clause (FreeBSD) License", value: "BSD-2-Clause-FreeBSD" },
+  { name: "BSD 3-Clause (NewBSD) License", value: "BSD-3-Clause" },
+  { name: "Internet Systems Consortium (ISC) License", value: "ISC" },
+  { name: "GNU AGPL 3.0", value: "AGPL-3.0" },
+  { name: "GNU GPL 3.0", value: "GPL-3.0" },
+  { name: "GNU LGPL 3.0", value: "LGPL-3.0" },
+  { name: "Unlicense", value: "unlicense" },
+  { name: "No License (Copyrighted)", value: "UNLICENSED" }
+];
+
+const getLicenseValue = (name) => {
+  for(const item of licenses){
+    if (item.name === name){
+      return item.value;
+    }
+  }
+}
 
 module.exports = class extends Generator {
   prompting() {
@@ -36,22 +54,20 @@ module.exports = class extends Generator {
       },
       {
         type: "text",
+        name: "description",
+        message: "What is the description for this role?"
+      },
+      {
+        type: "list",
         name: "metaLicense",
-        message: "What is the license for this role?"
+        message: "What is the license for this role?",
+        choices: licenses.map(item => item.name)
       },
       {
         type: "confirm",
         name: "includeMeta",
         message: "Would you like to include the meta folder?",
         default: false
-      },
-      {
-        when: response => {
-          return response.includeMeta;
-        },
-        type: "text",
-        name: "metaDescription",
-        message: "What is the description for this role?"
       },
       {
         when: response => {
@@ -65,6 +81,9 @@ module.exports = class extends Generator {
 
     return this.prompt(prompts).then(props => {
       this.props = props;
+
+      // Formatting some props
+      this.props.roleName = _.kebabCase(this.props.roleName);
     });
   }
 
@@ -89,7 +108,8 @@ module.exports = class extends Generator {
     this.fs.write(
       path.join(roleRoot, "README.md"),
       readMeTemplate({
-        roleName: this.props.roleName
+        roleName: this.props.roleName,
+        authorName: this.props.authorName
       })
     );
     const runScriptTemplate = _.template(
@@ -127,9 +147,9 @@ module.exports = class extends Generator {
         metaTemplate({
           authorName: this.props,
           authorName: this.props.authorName,
-          metaDescription: this.props.metaDescription,
+          description: this.props.description,
           metaCompany: this.props.metaCompany,
-          metaLicence: this.props.metaLicense
+          metaLicence: getLicenseValue(this.props.metaLicense)
         })
       );
     }
@@ -166,10 +186,9 @@ module.exports = class extends Generator {
       main: "index.js",
       // TODO this grab this dynamically
       repository: "git@github.com:Aaron-K-T-Berry/generator-ansible.git",
-      // TODO this grab this dynamically
-      description: "",
+      description: this.props.description,
       author: this.props.authorName,
-      license: this.props.license,
+      license: getLicenseValue(this.props.metaLicense),
       dependencies: {},
       scripts: {
         venv: "virtualenv venv",
@@ -199,6 +218,21 @@ module.exports = class extends Generator {
   }
 
   install() {
+    // Fixing permissions
+    exec(
+      `chmod +x ${path.join(
+        this.destinationRoot(),
+        this.props.roleRoot,
+        "run-test.sh"
+      )}`,
+      (err, stdout, stderr) => {
+        if (err || stderr) {
+          console.log("ERR", err);
+          console.log("STDERR", stderr);
+
+        }
+      }
+    );
     // this.installDependencies({ bower: false });
   }
 };
