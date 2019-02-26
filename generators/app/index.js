@@ -22,24 +22,18 @@ const licenses = [
   { name: "No License (Copyrighted)", value: "UNLICENSED" }
 ];
 
-const getLicenseValue = (name) => {
-  for(const item of licenses){
-    if (item.name === name){
+const getLicenseValue = name => {
+  for (const item of licenses) {
+    if (item.name === name) {
       return item.value;
     }
   }
-}
+};
 
 module.exports = class extends Generator {
   prompting() {
     // Have Yeoman greet the user.
-    this.log(
-      yosay(
-        `Welcome to the groundbreaking ${chalk.red(
-          "generator-ansible"
-        )} generator!`
-      )
-    );
+    this.log(yosay(`Welcome to the groundbreaking ${chalk.red("generator-ansible")} generator!`));
 
     const prompts = [
       {
@@ -102,9 +96,7 @@ module.exports = class extends Generator {
       this.templatePath("./.*"),
       roleRoot
     );
-    const readMeTemplate = _.template(
-      this.fs.read(this.templatePath("README.md"))
-    );
+    const readMeTemplate = _.template(this.fs.read(this.templatePath("README.md")));
     this.fs.write(
       path.join(roleRoot, "README.md"),
       readMeTemplate({
@@ -112,9 +104,7 @@ module.exports = class extends Generator {
         authorName: this.props.authorName
       })
     );
-    const runScriptTemplate = _.template(
-      this.fs.read(this.templatePath("run-test.sh"))
-    );
+    const runScriptTemplate = _.template(this.fs.read(this.templatePath("run-test.sh")));
     this.fs.write(
       path.join(roleRoot, "run-test.sh"),
       runScriptTemplate({
@@ -124,24 +114,16 @@ module.exports = class extends Generator {
 
     // DEFAULTS
     mkdirp.sync(path.join(roleRoot, "defaults"));
-    this.fs.copy(
-      this.templatePath("defaults"),
-      path.join(roleRoot, "defaults")
-    );
+    this.fs.copy(this.templatePath("defaults"), path.join(roleRoot, "defaults"));
 
     // HANDLERS
     mkdirp.sync(path.join(roleRoot, "handlers"));
-    this.fs.copy(
-      this.templatePath("handlers"),
-      path.join(roleRoot, "handlers")
-    );
+    this.fs.copy(this.templatePath("handlers"), path.join(roleRoot, "handlers"));
 
     // META
     if (this.props.includeMeta) {
       mkdirp.sync(path.join(roleRoot, "meta"));
-      const metaTemplate = _.template(
-        this.fs.read(this.templatePath("meta/main.yml"))
-      );
+      const metaTemplate = _.template(this.fs.read(this.templatePath("meta/main.yml")));
       this.fs.write(
         path.join(roleRoot, "meta/main.yml"),
         metaTemplate({
@@ -156,10 +138,7 @@ module.exports = class extends Generator {
 
     // MOLECULE
     mkdirp.sync(path.join(roleRoot, "molecule/default/tests"));
-    this.fs.copy(
-      this.templatePath("molecule"),
-      path.join(roleRoot, "molecule")
-    );
+    this.fs.copy(this.templatePath("molecule"), path.join(roleRoot, "molecule"));
     const playbookTemplate = _.template(
       this.fs.read(this.templatePath("molecule/default/playbook.yml"))
     );
@@ -211,25 +190,17 @@ module.exports = class extends Generator {
         verify: "molecule verify"
       }
     };
-    this.fs.writeJSON(
-      path.join(this.props.roleRoot, "package.json"),
-      pkgTemplate
-    );
+    this.fs.writeJSON(path.join(this.props.roleRoot, "package.json"), pkgTemplate);
   }
 
   install() {
     // Fixing permissions
     exec(
-      `chmod +x ${path.join(
-        this.destinationRoot(),
-        this.props.roleRoot,
-        "run-test.sh"
-      )}`,
+      `chmod +x ${path.join(this.destinationRoot(), this.props.roleRoot, "run-test.sh")}`,
       (err, stdout, stderr) => {
         if (err || stderr) {
           console.log("ERR", err);
           console.log("STDERR", stderr);
-
         }
       }
     );

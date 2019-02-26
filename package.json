@@ -6,11 +6,19 @@
   "author": "aaron <aaron.abm@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "bower": "^1.8.8",
     "chalk": "^2.4.2",
+    "git-config": "0.0.7",
     "lodash": "^4.17.11",
     "mkdirp": "^0.5.1",
     "yeoman-generator": "^3.2.0",
     "yosay": "^2.0.2"
+  },
+  "devDependencies": {
+    "jest": "^24.1.0",
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "^1.9.1"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
