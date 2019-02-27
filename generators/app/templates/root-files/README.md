@@ -43,7 +43,7 @@ BSD
 
 Author Information
 ------------------
-<!-- TODO Add author email info dynamically -->
+<!-- TODO [GIT] Add author email info dynamically -->
 Author: <%- authorName %>
 
 An optional section for the role authors to include contact information, or a
