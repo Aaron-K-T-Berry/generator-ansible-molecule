@@ -23,6 +23,7 @@
     "yo": "^2.0.5"
   },
   "scripts": {
-    "test": "node_modules/.bin/jest --coverage --coverageReporters=text-lcov | coveralls"
+    "test": "node_modules/.bin/jest",
+    "test-ci": "node_modules/.bin/jest --coverage --coverageReporters=text-lcov | coveralls"
   }
 }

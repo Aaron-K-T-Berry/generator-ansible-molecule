@@ -3,3 +3,4 @@ node_js:
   - v11
   - v10
   - v8
+script: yarn test-ci
