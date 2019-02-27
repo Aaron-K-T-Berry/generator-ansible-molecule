@@ -2,3 +2,4 @@ node_modules
 coverage
 venv
 tmp
+yarn-error.log
