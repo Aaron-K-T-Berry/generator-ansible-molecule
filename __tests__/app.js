@@ -1,5 +1,4 @@
 const path = require("path");
-const rimraf = require("rimraf");
 const helpers = require("yeoman-test");
 const assert = require("yeoman-assert");
 const fs = require("fs");
