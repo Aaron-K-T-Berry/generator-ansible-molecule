@@ -4,7 +4,7 @@
   "main": "index.js",
   "repository": "git@github.com:Aaron-K-T-Berry/generator-ansible.git",
   "author": "aaron <aaron.abm@gmail.com>",
-  "license": "MIT", 
+  "license": "MIT",
   "dependencies": {
     "chalk": "^2.4.2",
     "git-config": "0.0.7",
@@ -14,6 +14,7 @@
     "yosay": "^2.0.2"
   },
   "devDependencies": {
+    "coveralls": "^3.0.3",
     "jest": "^24.1.0",
     "rimraf": "^2.6.3",
     "yeoman-assert": "^3.1.1",
@@ -22,6 +23,6 @@
     "yo": "^2.0.5"
   },
   "scripts": {
-    "test": "node_modules/.bin/jest"
+    "test": "node_modules/.bin/jest --coverage --coverageReporters=text-lcov | coveralls"
   }
 }
