@@ -169,14 +169,6 @@ describe("CircleCi included", () => {
 describe("Meta included", () => {
   const prompts = { ...defaultPrompts, ...{ includeMeta: true, metaCompany: "Company co." } };
 
-  const roleName = "test";
-  const authorName = "John smith";
-  const description = "Role description";
-  const metaLicense = "MIT";
-  const includeMolecule = false;
-  const includeMeta = true;
-  const metaCompany = "Company co.";
-
   beforeEach(() => {
     return helpers.run(path.join(__dirname, "../generators/app")).withPrompts(prompts);
   });
@@ -186,10 +178,10 @@ describe("Meta included", () => {
   });
 
   it("Contents meta/main.yml", () => {
-    assert.fileContent(`${prompts.roleName}/meta/main.yml`, `author: ${authorName}`);
-    assert.fileContent(`${prompts.roleName}/meta/main.yml`, `description: ${description}`);
-    assert.fileContent(`${prompts.roleName}/meta/main.yml`, `company: ${metaCompany}`);
-    assert.fileContent(`${prompts.roleName}/meta/main.yml`, `license: ${metaLicense}`);
+    assert.fileContent(`${prompts.roleName}/meta/main.yml`, `author: ${prompts.authorName}`);
+    assert.fileContent(`${prompts.roleName}/meta/main.yml`, `description: ${prompts.description}`);
+    assert.fileContent(`${prompts.roleName}/meta/main.yml`, `company: ${prompts.metaCompany}`);
+    assert.fileContent(`${prompts.roleName}/meta/main.yml`, `license: ${prompts.metaLicense}`);
   });
 
   it("Content package.json", () => {
