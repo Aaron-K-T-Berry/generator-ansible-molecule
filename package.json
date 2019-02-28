@@ -6,13 +6,15 @@
   "author": "aaron <aaron.abm@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "yo": "^2.0.5",
-    "yeoman-generator": "^3.2.0",
-    "yosay": "^2.0.2",
     "chalk": "^2.4.2",
+    "git-config": "0.0.7",
+    "global": "^4.3.2",
     "lodash": "^4.17.11",
     "mkdirp": "^0.5.1",
-    "git-config": "0.0.7"
+    "snyk": "^1.135.1",
+    "yeoman-generator": "^3.2.0",
+    "yo": "^2.0.5",
+    "yosay": "^2.0.2"
   },
   "devDependencies": {
     "coveralls": "^3.0.3",
@@ -24,6 +26,7 @@
   },
   "scripts": {
     "test": "node_modules/.bin/jest",
-    "test-ci": "node_modules/.bin/jest --coverage --coverageReporters=text-lcov | coveralls"
+    "test-ci": "node_modules/.bin/jest --coverage --coverageReporters=text-lcov | coveralls",
+    "test-dep": "snyk test"
   }
 }
