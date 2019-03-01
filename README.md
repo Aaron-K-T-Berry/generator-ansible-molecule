@@ -7,3 +7,4 @@
 - Add support for other ci cd platforms like travis
 - Add option to specify path of install
 - Print out all options after yo message
+- Better testing of git configs in prompts

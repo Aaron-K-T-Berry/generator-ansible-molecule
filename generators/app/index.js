@@ -22,6 +22,8 @@ const licenses = [
   { name: "No License (Copyrighted)", value: "UNLICENSED" }
 ];
 
+const ciCdPlatforms = ["travisCi", "circleCi", "None"];
+
 const getLicenseValue = name => {
   for (const item of licenses) {
     if (item.name === name) {
@@ -30,9 +32,14 @@ const getLicenseValue = name => {
   }
 };
 
-var gitConfigs = gitConfig.sync();
+let configs = {};
+let roleRoot;
 
 module.exports = class extends Generator {
+  initializing() {
+    configs.gitConfigs = gitConfig.sync();
+  }
+
   prompting() {
     this.log(yosay(`Welcome to the groundbreaking ${chalk.red("generator-ansible")} generator!`));
 
@@ -60,13 +67,13 @@ module.exports = class extends Generator {
         type: "text",
         name: "gitAuthorName",
         message: "What is your name (Will be used in  the meta file and package.json)?",
-        default: gitConfigs.user.name
+        default: configs.gitConfigs.user.name
       },
       {
         type: "text",
         name: "gitAuthorEmail",
         message: "What is your email (Will be used in  the meta file and package.json)?",
-        default: gitConfigs.user.email
+        default: configs.gitConfigs.user.email
       },
       {
         type: "confirm",
@@ -96,9 +103,18 @@ module.exports = class extends Generator {
           return response.includeMolecule;
         },
         type: "confirm",
-        name: "includeCircleCi",
-        message: "Would you like to include a basic circle ci config for molecule?",
+        name: "includeCiCd",
+        message: "Would you like to include a basic ci cd config for molecule?",
         default: true
+      },
+      {
+        when: response => {
+          return response.includeCiCd;
+        },
+        type: "list",
+        name: "ciCdPlatform",
+        message: "What ci cd platform?",
+        choices: ciCdPlatforms
       }
     ];
 
@@ -131,19 +147,32 @@ module.exports = class extends Generator {
     });
   }
 
+  configuring() {
+    // Setting veriables for the rest of the generator from prompts
+    roleRoot = `./${this.props.roleName}`;
+    
+    // CICD
+    if (this.props.includeCiCd) {
+      switch (this.props.ciCdPlatform) {
+        case "None":
+          break;
+        case "travisCi":
+          this.fs.copy(this.templatePath("travis/.travis.yml"), path.join(roleRoot, ".travis.yml"));
+          break;
+        case "circleCi":
+          mkdirp.sync(path.join(roleRoot, ".circleci"));
+          this.fs.copy(this.templatePath("ci/.circleci"), path.join(roleRoot, ".circleci"));
+          break;
+      }
+    }
+  }
+
   default() {
     // Folder root
-    const roleRoot = `./${this.props.roleName}`;
     this.props.roleRoot = roleRoot;
     mkdirp.sync(roleRoot);
     this.fs.copy(this.templatePath("root-files"), roleRoot);
     this.fs.copy(this.templatePath("root-files/.**"), roleRoot);
-
-    // CIRCLECI
-    if (this.props.includeCircleCi) {
-      mkdirp.sync(path.join(roleRoot, ".circleci"));
-      this.fs.copy(this.templatePath(".circleci"), path.join(roleRoot, ".circleci"));
-    }
 
     // DEFAULTS
     mkdirp.sync(path.join(roleRoot, "defaults"));
@@ -163,7 +192,6 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    const roleRoot = `./${this.props.roleName}`;
 
     // MOLECULE
     if (this.props.includeMolecule) {
@@ -256,4 +284,6 @@ module.exports = class extends Generator {
     // Fixing permissions
     exec(`chmod +x ${path.join(this.destinationRoot(), this.props.roleRoot, "run-test.sh")}`);
   }
+
+  end() {}
 };
