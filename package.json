@@ -25,6 +25,7 @@
     "yo": "^2.0.5"
   },
   "scripts": {
+    "yo-ansible-molecule": "node_modules/.bin/yo ansible-molecule ",
     "test": "node_modules/.bin/jest",
     "test-ci": "node_modules/.bin/jest --coverage --coverageReporters=text-lcov | coveralls",
     "test-dep": "snyk test"
