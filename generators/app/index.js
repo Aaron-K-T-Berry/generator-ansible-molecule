@@ -41,7 +41,13 @@ module.exports = class extends Generator {
   }
 
   prompting() {
-    this.log(yosay(`Welcome to the groundbreaking ${chalk.red("generator-ansible")} generator!`));
+    this.log(
+      yosay(
+        `Welcome to the groundbreaking ${chalk.red(
+          "generator-ansible"
+        )} generator!`
+      )
+    );
 
     const basicQuestionsPrompts = [
       {
@@ -66,6 +72,7 @@ module.exports = class extends Generator {
       {
         type: "text",
         name: "gitAuthorName",
+
         message: "What is your name (Will be used in  the meta file and package.json)?",
         default: configs.gitConfigs.user.name
       },
@@ -87,7 +94,8 @@ module.exports = class extends Generator {
         },
         type: "text",
         name: "gitRepoUrl",
-        message: "What is your email (Will be used in  the meta file and package.json)?"
+        message:
+          "What is your email (Will be used in  the meta file and package.json)?"
       }
     ];
 
@@ -176,11 +184,17 @@ module.exports = class extends Generator {
 
     // DEFAULTS
     mkdirp.sync(path.join(roleRoot, "defaults"));
-    this.fs.copy(this.templatePath("defaults"), path.join(roleRoot, "defaults"));
+    this.fs.copy(
+      this.templatePath("defaults"),
+      path.join(roleRoot, "defaults")
+    );
 
     // HANDLERS
     mkdirp.sync(path.join(roleRoot, "handlers"));
-    this.fs.copy(this.templatePath("handlers"), path.join(roleRoot, "handlers"));
+    this.fs.copy(
+      this.templatePath("handlers"),
+      path.join(roleRoot, "handlers")
+    );
 
     // TASKS
     mkdirp.sync(path.join(roleRoot, "tasks"));
@@ -196,7 +210,10 @@ module.exports = class extends Generator {
     // MOLECULE
     if (this.props.includeMolecule) {
       mkdirp.sync(path.join(roleRoot, "molecule/default/tests"));
-      this.fs.copy(this.templatePath("molecule"), path.join(roleRoot, "molecule"));
+      this.fs.copy(
+        this.templatePath("molecule"),
+        path.join(roleRoot, "molecule")
+      );
       const playbookTemplate = _.template(
         this.fs.read(this.templatePath("molecule/default/playbook.yml"))
       );
@@ -208,7 +225,9 @@ module.exports = class extends Generator {
       );
     }
 
-    const readMeTemplate = _.template(this.fs.read(this.templatePath("root-files/README.md")));
+    const readMeTemplate = _.template(
+      this.fs.read(this.templatePath("root-files/README.md"))
+    );
     this.fs.write(
       path.join(roleRoot, "README.md"),
       readMeTemplate({
@@ -217,7 +236,9 @@ module.exports = class extends Generator {
         authorEmail: this.props.gitAuthorEmail
       })
     );
-    const runScriptTemplate = _.template(this.fs.read(this.templatePath("root-files/run-test.sh")));
+    const runScriptTemplate = _.template(
+      this.fs.read(this.templatePath("root-files/run-test.sh"))
+    );
     this.fs.write(
       path.join(roleRoot, "run-test.sh"),
       runScriptTemplate({
@@ -227,7 +248,9 @@ module.exports = class extends Generator {
 
     // META
     if (this.props.includeMeta) {
-      const metaTemplate = _.template(this.fs.read(this.templatePath("meta/main.yml")));
+      const metaTemplate = _.template(
+        this.fs.read(this.templatePath("meta/main.yml"))
+      );
       this.fs.write(
         path.join(roleRoot, "meta/main.yml"),
         metaTemplate({
@@ -282,7 +305,13 @@ module.exports = class extends Generator {
 
   install() {
     // Fixing permissions
-    exec(`chmod +x ${path.join(this.destinationRoot(), this.props.roleRoot, "run-test.sh")}`);
+    exec(
+      `chmod +x ${path.join(
+        this.destinationRoot(),
+        this.props.roleRoot,
+        "run-test.sh"
+      )}`
+    );
   }
 
   end() {}
