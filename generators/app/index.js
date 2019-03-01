@@ -6,8 +6,7 @@ const mkdirp = require("mkdirp");
 const path = require("path");
 const _ = require("lodash");
 const exec = require("child_process").exec;
-// TODO [GIT] GET GIT CONFIGS
-// const gitConfig = require("git-config");
+const gitConfig = require("git-config");
 
 const licenses = [
   { name: "Apache 2.0", value: "Apache-2.0" },
@@ -31,21 +30,17 @@ const getLicenseValue = name => {
   }
 };
 
+var gitConfigs = gitConfig.sync();
+
 module.exports = class extends Generator {
   prompting() {
-    
     this.log(yosay(`Welcome to the groundbreaking ${chalk.red("generator-ansible")} generator!`));
-    
-    const prompts = [
+
+    const basicQuestionsPrompts = [
       {
         type: "text",
         name: "roleName",
         message: "What is the name of this role?"
-      },
-      {
-        type: "text",
-        name: "authorName",
-        message: "What is your name?"
       },
       {
         type: "text",
@@ -54,10 +49,42 @@ module.exports = class extends Generator {
       },
       {
         type: "list",
-        name: "metaLicense",
+        name: "license",
         message: "What is the license for this role?",
         choices: licenses.map(item => item.name)
+      }
+    ];
+
+    const gitCredentialsPrompts = [
+      {
+        type: "text",
+        name: "gitAuthorName",
+        message: "What is your name (Will be used in  the meta file and package.json)?",
+        default: gitConfigs.user.name
       },
+      {
+        type: "text",
+        name: "gitAuthorEmail",
+        message: "What is your email (Will be used in  the meta file and package.json)?",
+        default: gitConfigs.user.email
+      },
+      {
+        type: "confirm",
+        name: "gitIncludeRepoUrl",
+        message: "Would you like to include a repository in the package.json?",
+        default: true
+      },
+      {
+        when: response => {
+          return response.gitIncludeRepoUrl;
+        },
+        type: "text",
+        name: "gitRepoUrl",
+        message: "What is your email (Will be used in  the meta file and package.json)?"
+      }
+    ];
+
+    const moleculePrompts = [
       {
         type: "confirm",
         name: "includeMolecule",
@@ -68,11 +95,14 @@ module.exports = class extends Generator {
         when: response => {
           return response.includeMolecule;
         },
-        type: "text",
+        type: "confirm",
         name: "includeCircleCi",
         message: "Would you like to include a basic circle ci config for molecule?",
-        default: false
-      },
+        default: true
+      }
+    ];
+
+    const metaPrompts = [
       {
         type: "confirm",
         name: "includeMeta",
@@ -89,10 +119,15 @@ module.exports = class extends Generator {
       }
     ];
 
+    const prompts = [
+      ...basicQuestionsPrompts,
+      ...gitCredentialsPrompts,
+      ...moleculePrompts,
+      ...metaPrompts
+    ];
+
     return this.prompt(prompts).then(props => {
       this.props = props;
-      // Formatting some props
-      // this.props.roleName = _.kebabCase(this.props.roleName);
     });
   }
 
@@ -105,11 +140,11 @@ module.exports = class extends Generator {
     this.fs.copy(this.templatePath("root-files/.**"), roleRoot);
 
     // CIRCLECI
-    if(this.props.includeCircleCi){
+    if (this.props.includeCircleCi) {
       mkdirp.sync(path.join(roleRoot, ".circleci"));
       this.fs.copy(this.templatePath(".circleci"), path.join(roleRoot, ".circleci"));
     }
-    
+
     // DEFAULTS
     mkdirp.sync(path.join(roleRoot, "defaults"));
     this.fs.copy(this.templatePath("defaults"), path.join(roleRoot, "defaults"));
@@ -150,7 +185,8 @@ module.exports = class extends Generator {
       path.join(roleRoot, "README.md"),
       readMeTemplate({
         roleName: this.props.roleName,
-        authorName: this.props.authorName
+        authorName: this.props.gitAuthorName,
+        authorEmail: this.props.gitAuthorEmail
       })
     );
     const runScriptTemplate = _.template(this.fs.read(this.templatePath("root-files/run-test.sh")));
@@ -167,10 +203,10 @@ module.exports = class extends Generator {
       this.fs.write(
         path.join(roleRoot, "meta/main.yml"),
         metaTemplate({
-          authorName: this.props.authorName,
+          authorName: this.props.gitAuthorName,
           description: this.props.description,
           metaCompany: this.props.metaCompany,
-          metaLicence: getLicenseValue(this.props.metaLicense)
+          metaLicence: getLicenseValue(this.props.license)
         })
       );
     }
@@ -180,11 +216,10 @@ module.exports = class extends Generator {
       name: this.props.roleName,
       version: "1.0.0",
       main: "index.js",
-      // TODO [GIT] grab this dynamically
-      repository: "git@github.com:Aaron-K-T-Berry/generator-ansible.git",
+      repository: this.props.gitIncludeRepoUrl ? this.props.gitRepoUrl : "",
       description: this.props.description,
-      author: this.props.authorName,
-      license: getLicenseValue(this.props.metaLicense),
+      author: this.props.gitAuthorName,
+      license: getLicenseValue(this.props.license),
       dependencies: {},
       scripts: {
         venv: "virtualenv venv",
