@@ -165,7 +165,7 @@ module.exports = class extends Generator {
         case "None":
           break;
         case "travisCi":
-          this.fs.copy(this.templatePath("travis/.travis.yml"), path.join(roleRoot, ".travis.yml"));
+          this.fs.copy(this.templatePath("ci/travis/.travis.yml"), path.join(roleRoot, ".travis.yml"));
           break;
         case "circleCi":
           mkdirp.sync(path.join(roleRoot, ".circleci"));
