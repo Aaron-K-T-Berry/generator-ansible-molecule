@@ -4,7 +4,6 @@
 # generator-ansible-molecule
 
 # Todo
-- Add functionality to get git credentials for default values
 - Add support for other ci cd platforms like travis
 - Add option to specify path of install
 - Print out all options after yo message
