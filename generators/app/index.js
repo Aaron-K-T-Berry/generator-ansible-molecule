@@ -6,17 +6,18 @@ const mkdirp = require("mkdirp");
 const path = require("path");
 const _ = require("lodash");
 const exec = require("child_process").exec;
-const p = require("./src/prompts");
+const prompt = require("./src/prompts");
+const getLicenseValue = require("./src/prompts").getLicenseValue;
 
 module.exports = class extends Generator {
   prompting() {
     this.log(yosay(`Welcome to the groundbreaking ${chalk.red("generator-ansible")} generator!`));
 
     const prompts = [
-      ...p.basicQuestionsPrompts,
-      ...p.gitCredentialsPrompts,
-      ...p.moleculePrompts,
-      ...p.metaPrompts
+      ...prompt.basicQuestionsPrompts,
+      ...prompt.gitCredentialsPrompts,
+      ...prompt.moleculePrompts,
+      ...prompt.metaPrompts
     ];
 
     return this.prompt(prompts).then(props => {
@@ -99,7 +100,7 @@ module.exports = class extends Generator {
           authorName: this.props.gitAuthorName,
           description: this.props.description,
           metaCompany: this.props.metaCompany,
-          metaLicence: p.getLicenseValue(this.props.license)
+          metaLicence: getLicenseValue(this.props.license)
         })
       );
     }
@@ -112,7 +113,7 @@ module.exports = class extends Generator {
       repository: this.props.gitIncludeRepoUrl ? this.props.gitRepoUrl : "",
       description: this.props.description,
       author: this.props.gitAuthorName,
-      license: p.getLicenseValue(this.props.license),
+      license: getLicenseValue(this.props.license),
       dependencies: {},
       scripts: {
         venv: "virtualenv venv",
