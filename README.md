@@ -3,7 +3,8 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/Aaron-K-T-Berry/generator-ansible-molecule/badge.svg)](https://snyk.io/test/github/Aaron-K-T-Berry/generator-ansible-molecule)
 # generator-ansible-molecule
 
-# Todo
-- Add support for other ci cd platforms like travis
-- Add option to specify path of install
-- Print out all options after yo message
+<!-- TODO [OPTS] Add option to specify path of install -->
+<!-- TODO [OPTS] Print out all options after yo message -->
+<!-- TODO [CICD] Add more ci cd options aim for all free ones-->
+<!-- TODO [TESTS] Split up tests more logically -->
+<!-- TODO [CLEANUP] Refactor generator to be more compact -->
