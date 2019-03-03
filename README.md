@@ -9,4 +9,6 @@
 <!-- TODO [TESTS] Split up tests more logically -->
 <!-- TODO [CLEANUP] Refactor generator to be more compact -->
 <!-- TODO [CLEANUP] Prompts var name -->
+<!-- TODO [CLEANUP] Refactor to use full yeoman life cycle -->
+<!-- TODO [CLEANUP] Add a goodbye message -->
 <!-- TODO [REPO] Write read me -->
