@@ -141,7 +141,9 @@ describe("Defaults included", () => {
 		);
 	});
 
-	// TODO check exec permissions of this file
+  it("Permissions of run-test.sh", () => {
+    fs.accessSync(`${prompts.roleName}/run-test.sh`, fs.constants.S_IXUSR)
+	});
 
 	it("Copied package.json", () => {
 		assert.file(`${prompts.roleName}/package.json`);
