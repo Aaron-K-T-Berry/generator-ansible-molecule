@@ -8,3 +8,5 @@
 <!-- TODO [CICD] Add more ci cd options aim for all free ones-->
 <!-- TODO [TESTS] Split up tests more logically -->
 <!-- TODO [CLEANUP] Refactor generator to be more compact -->
+<!-- TODO [CLEANUP] Prompts var name -->
+<!-- TODO [REPO] Write read me -->
