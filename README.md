@@ -12,3 +12,4 @@
 <!-- TODO [OPTS] Print out all options after yo message -->
 <!-- TODO [CICD] Add more ci cd options aim for all free ones on github marketplace -->
 <!-- TODO [TESTS] Split up tests more logically -->
+<!-- TODO [REPO] Add semantic release to ci pipeline -->
