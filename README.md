@@ -25,8 +25,6 @@ Currently this generator is being tested against the following node versions.
 ### Contributing
 Feel free to post issues, and create prs with an changes, fixes or enhancements.
 
-<!-- TODO [CLEANUP] Refactor to use full yeoman life cycle -->
-<!-- TODO [CLEANUP] Refactor generator to be more compact -->
 <!-- TODO [OPTS] Add option to specify path of install -->
 <!-- TODO [OPTS] Print out all options after yo message -->
 <!-- TODO [CICD] Add more ci cd options aim for all free ones on github marketplace -->
