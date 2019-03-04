@@ -117,8 +117,10 @@ const metaPrompts = [
 module.exports = {
 	licenses,
 	getLicenseValue,
-	basicQuestionsPrompts,
-	gitCredentialsPrompts,
-	moleculePrompts,
-	metaPrompts
+	allPrompts: [
+		...basicQuestionsPrompts,
+		...gitCredentialsPrompts,
+		...moleculePrompts,
+		...metaPrompts
+  ]
 };
