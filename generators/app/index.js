@@ -22,7 +22,7 @@ module.exports = class extends Generator {
 		this.argument("driver-name", {
 			type: String,
 			alias: "driver",
-			desc: "Driver to use for this role",
+			desc: "Driver to use for this role (NOT IMPLEMENTED)",
 			required: false
 		});
 		this.argument("prefix-path", {
@@ -55,7 +55,9 @@ module.exports = class extends Generator {
 	configuring() {
 		// Setting arguments into props
 		if (this.options["role-name"] !== undefined)
-			this.props["roleName"] = this.options["role-name"];
+      this.props["roleName"] = this.options["role-name"];
+    if (this.options["driver-name"] !== undefined)
+			this.log("[IGNORED] OPTION driver-name IS NOT YET IMPLEMENTED")
 
 		// Setting options into props
 		if (this.options["include-molecule"])
