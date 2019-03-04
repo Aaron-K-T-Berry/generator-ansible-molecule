@@ -6,11 +6,36 @@ const mkdirp = require("mkdirp");
 const path = require("path");
 const _ = require("lodash");
 const exec = require("child_process").exec;
-const p = require("./src/prompts");
+const promptBuilder = require("./src/prompts").promptBuilder;
 const getLicenseValue = require("./src/prompts").getLicenseValue;
 const buildPackageJSON = require("./src/package-builder").buildPackageJSON;
 
 module.exports = class extends Generator {
+	constructor(args, opts) {
+		super(args, opts);
+		this.argument("role-name", {
+			type: String,
+			alias: "name",
+			desc: "Name of the role",
+			required: false
+		});
+		this.argument("driver-name", {
+			type: String,
+			alias: "driver",
+			desc: "Driver to use for this role",
+			required: false
+		});
+		this.argument("prefix-path", {
+			type: String,
+			alias: "path",
+			desc:
+				"Path to prefix onto the install location of the created ansible role",
+			required: false
+		});
+		this.option("include-molecule");
+		this.option("include-meta");
+	}
+
 	initializing() {}
 
 	prompting() {
@@ -22,14 +47,37 @@ module.exports = class extends Generator {
 			)
 		);
 
-		return this.prompt(p.allPrompts).then(props => {
+		return this.prompt(promptBuilder(this.options)).then(props => {
 			this.props = props;
-			this.props.roleRoot = `./${this.props.roleName}`;
 		});
 	}
 
 	configuring() {
-		const roleRoot = `./${this.props.roleName}`;
+		// Setting arguments into props
+		if (this.options["role-name"] !== undefined)
+			this.props["roleName"] = this.options["role-name"];
+
+		// Setting options into props
+		if (this.options["include-molecule"])
+			this.props.includeMolecule = this.options["include-molecule"];
+		if (this.options["include-meta"])
+      this.props.includeMeta = this.options["include-meta"];
+
+		if (this.options["prefix-path"] !== undefined) {
+			try {
+				this.props.roleRoot = path.join(this.options["prefix-path"], this.props.roleName);
+			} catch (err) {
+				if (this.options.debug) this.log(err);
+				this.log(
+					"Error encountered trying to parse prefix argument, defaulting too no prefix"
+				);
+				this.props.roleRoot = path.join(this.props.roleName);
+			}
+		} else {
+			this.props.roleRoot = path.join(this.props.roleName);
+		}
+
+		const roleRoot = this.props.roleRoot;
 
 		// CIRCLECI
 		if (this.props.includeCircleCi) {
@@ -42,7 +90,7 @@ module.exports = class extends Generator {
 	}
 
 	default() {
-		const roleRoot = `./${this.props.roleName}`;
+		const roleRoot = this.props.roleRoot;
 
 		const filePaths = [
 			{
@@ -78,13 +126,13 @@ module.exports = class extends Generator {
 
 		// Copying file paths
 		filePaths.forEach(item => {
-      if (item.mkPath !== undefined) mkdirp.sync(item.mkPath);
+			if (item.mkPath !== undefined) mkdirp.sync(item.mkPath);
 			this.fs.copy(item.src, item.dest);
 		});
 	}
 
 	writing() {
-		const roleRoot = `./${this.props.roleName}`;
+		const roleRoot = this.props.roleRoot;
 
 		const templates = [
 			{
