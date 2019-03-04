@@ -14,21 +14,22 @@ module.exports = class extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
 		this.argument("role-name", {
-      type: String,
-      alias: "name",
+			type: String,
+			alias: "name",
 			desc: "Name of the role",
 			required: false
 		});
 		this.argument("driver-name", {
-      type: String,
-      alias: "driver",
+			type: String,
+			alias: "driver",
 			desc: "Driver to use for this role",
 			required: false
 		});
 		this.argument("prefix-path", {
-      type: String,
-      alias: "path",
-			desc: "Path to prefix onto the install location of the created ansible role",
+			type: String,
+			alias: "path",
+			desc:
+				"Path to prefix onto the install location of the created ansible role",
 			required: false
 		});
 		this.option("include-molecule");
@@ -48,12 +49,35 @@ module.exports = class extends Generator {
 
 		return this.prompt(promptBuilder(this.options)).then(props => {
 			this.props = props;
-			this.props.roleRoot = `./${this.props.roleName}`;
 		});
 	}
 
 	configuring() {
-		const roleRoot = `./${this.props.roleName}`;
+		// Setting arguments into props
+		if (this.options["role-name"] !== undefined)
+			this.props["roleName"] = this.options["role-name"];
+
+		// Setting options into props
+		if (this.options["include-molecule"])
+			this.props.includeMolecule = this.options["include-molecule"];
+		if (this.options["include-meta"])
+      this.props.includeMeta = this.options["include-meta"];
+
+		if (this.options["prefix-path"] !== undefined) {
+			try {
+				this.props.roleRoot = path.join(this.options["prefix-path"], this.props.roleName);
+			} catch (err) {
+				if (this.options.debug) this.log(err);
+				this.log(
+					"Error encountered trying to parse prefix argument, defaulting too no prefix"
+				);
+				this.props.roleRoot = path.join(this.props.roleName);
+			}
+		} else {
+			this.props.roleRoot = path.join(this.props.roleName);
+		}
+
+		const roleRoot = this.props.roleRoot;
 
 		// CIRCLECI
 		if (this.props.includeCircleCi) {
@@ -66,7 +90,7 @@ module.exports = class extends Generator {
 	}
 
 	default() {
-		const roleRoot = `./${this.props.roleName}`;
+		const roleRoot = this.props.roleRoot;
 
 		const filePaths = [
 			{
@@ -108,7 +132,7 @@ module.exports = class extends Generator {
 	}
 
 	writing() {
-		const roleRoot = `./${this.props.roleName}`;
+		const roleRoot = this.props.roleRoot;
 
 		const templates = [
 			{

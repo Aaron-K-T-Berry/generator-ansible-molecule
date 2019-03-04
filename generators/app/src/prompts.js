@@ -23,14 +23,14 @@ const getLicenseValue = name => {
 	}
 };
 
-const promptBuilder = options => {
+const promptBuilder = (options) => {
 	// BASIC
 	const basicQuestionsPrompts = [
 		{
       when: options["role-name"] === undefined,
 			type: "text",
 			name: "roleName",
-			message: "What is the name of this role?"
+      message: "What is the name of this role?",
 		},
 		{
 			type: "text",
