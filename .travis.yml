@@ -3,17 +3,13 @@ language: node_js
 cache:
   directories:
     - node_modules
-node_js:
-  - v11
-  - v10
-  - v8
+
 
 jobs:
   include:
     - script: yarn test-ci
     # Define the release stage that runs semantic-release
     - stage: release
-      node_js: lts/*
       # Advanced: optionally overwrite your default `script` step to skip the tests
       # script: skip
       deploy:
