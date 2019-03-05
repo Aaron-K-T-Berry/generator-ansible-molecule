@@ -10,6 +10,7 @@ install:
 jobs:
   include:
     - stage: test
+      if: branch != master
       name: "Test"
       node_js: lts/*
       script: yarn test-ci
