@@ -15,6 +15,7 @@ jobs:
       script: yarn test-ci
     
     - stage: release
+      name: "Release"
       if: branch = master
       node_js: lts/*
       script: skip
