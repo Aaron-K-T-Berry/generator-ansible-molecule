@@ -45,11 +45,11 @@ Currently this generator is being tested against the following node versions.
 
 Feel free to post issues, and create prs with an changes, fixes or enhancements.
 
+<!-- TODO [REPO] Add keywords too package.json -->
 <!-- TODO [TESTS] Increase test coverage -->
 <!-- TODO [TESTS] Split up tests more logically -->
-<!-- TODO [CICD] Add more ci cd options aim for all free ones on github marketplace -->
+<!-- TODO [MOLECULE] Add more ci cd options aim for all free ones on github marketplace -->
 <!-- TODO [MOLECULE] Implement molecule driver opts -->
 <!-- TODO [MOLECULE] Add more molecule driver opts -->
 <!-- TODO [MOLECULE] Cleanup optional molecule files -->
-<!-- TODO [REPO] Add semantic release to ci pipeline -->
-<!-- TODO [DRIVER] Add prompts for different driver opts -->
+<!-- TODO [MOLECULE] Add prompts for different driver opts -->

@@ -1,46 +1,57 @@
 {
-  "name": "generator-ansible-molecule",
-  "main": "index.js",
-  "repository": "https://github.com/Aaron-K-T-Berry/generator-ansible-molecule",
-  "author": "aaron <aaron.abm@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "chalk": "^2.4.2",
-    "git-config": "0.0.7",
-    "global": "^4.3.2",
-    "lodash": "^4.17.11",
-    "mkdirp": "^0.5.1",
-    "snyk": "^1.135.1",
-    "yeoman-generator": "^3.2.0",
-    "yo": "^2.0.5",
-    "yosay": "^2.0.2"
-  },
-  "release": {
-    "verifyConditions": {
-      "path": "./node_modules/semantic-release/src/lib/plugin-noop.js"
-    }
-  },
-  "devDependencies": {
-    "coveralls": "^3.0.3",
-    "cz-conventional-changelog": "2.1.0",
-    "jest": "^24.1.0",
-    "yeoman-assert": "^3.1.1",
-    "yeoman-generator": "^3.2.0",
-    "yeoman-test": "^1.9.1",
-    "yo": "^2.0.5",
-    "semantic-release": "^15.13.3"
-  },
-  "scripts": {
-    "commit": "git-cz",
-    "yo-ansible-molecule": "node_modules/.bin/yo ansible-molecule ",
-    "test": "node_modules/.bin/jest",
-    "test-ci": "node_modules/.bin/jest --coverage --coverageReporters=text-lcov | coveralls",
-    "test-dep": "snyk test",
-    "semantic-release": "semantic-release"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  }
+	"name": "generator-ansible-molecule",
+	"description": "",
+	"keywords": [
+    "yeoman-generator",
+    "generator",
+    "ansible",
+    "molecule"
+	],
+	"license": "MIT",
+	"author": "aaron <aaron.abm@gmail.com>",
+	"repository": "https://github.com/Aaron-K-T-Berry/generator-ansible-molecule",
+	"version": "0.0.0-development",
+	"main": "index.js",
+	"files": [
+		"generators"
+	],
+	"dependencies": {
+		"chalk": "^2.4.2",
+		"git-config": "0.0.7",
+		"global": "^4.3.2",
+		"lodash": "^4.17.11",
+		"mkdirp": "^0.5.1",
+		"snyk": "^1.135.1",
+		"yeoman-generator": "^3.2.0",
+		"yo": "^2.0.5",
+		"yosay": "^2.0.2"
+	},
+	"devDependencies": {
+		"coveralls": "^3.0.3",
+		"cz-conventional-changelog": "2.1.0",
+		"jest": "^24.1.0",
+		"yeoman-assert": "^3.1.1",
+		"yeoman-generator": "^3.2.0",
+		"yeoman-test": "^1.9.1",
+		"yo": "^2.0.5",
+		"semantic-release": "^15.13.3"
+	},
+	"scripts": {
+		"commit": "git-cz",
+		"yo-ansible-molecule": "node_modules/.bin/yo ansible-molecule ",
+		"test": "node_modules/.bin/jest",
+		"test-ci": "node_modules/.bin/jest --coverage --coverageReporters=text-lcov | coveralls",
+		"test-dep": "snyk test",
+		"semantic-release": "semantic-release"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	},
+	"release": {
+		"verifyConditions": {
+			"path": "./node_modules/semantic-release/src/lib/plugin-noop.js"
+		}
+	}
 }
