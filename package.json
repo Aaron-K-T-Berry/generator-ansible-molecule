@@ -1,6 +1,5 @@
 {
   "name": "generator-ansible-molecule",
-  "version": "1.2.2",
   "main": "index.js",
   "repository": "https://github.com/Aaron-K-T-Berry/generator-ansible-molecule",
   "author": "aaron <aaron.abm@gmail.com>",
