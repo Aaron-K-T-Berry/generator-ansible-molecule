@@ -18,9 +18,11 @@ jobs:
       name: "Release"
       if: branch = master
       node_js: lts/*
+      install: skip
       script: skip
       deploy:
         provider: script
         skip_cleanup: true
         script:
-          - npx semantic-release
+          - yarn global add semantic-release
+          - semantic-release
