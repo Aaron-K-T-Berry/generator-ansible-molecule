@@ -2,7 +2,7 @@
   "name": "generator-ansible-molecule",
   "version": "0.0.0-development",
   "main": "index.js",
-  "repository": "git@github.com:Aaron-K-T-Berry/generator-ansible.git",
+  "repository": "git@github.com:Aaron-K-T-Berry/generator-ansible-molecule.git",
   "author": "aaron <aaron.abm@gmail.com>",
   "license": "MIT",
   "dependencies": {
