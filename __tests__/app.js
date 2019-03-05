@@ -131,7 +131,7 @@ describe("Defaults included", () => {
     );
   });
 
-  // TODO check exec permissions of this file
+  // TODO [TESTS] check exec permissions of this file
 
   it("Copied package.json", () => {
     assert.file(`${prompts.roleName}/package.json`);

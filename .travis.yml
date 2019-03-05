@@ -1,9 +1,26 @@
+---
 language: node_js
 cache:
   directories:
     - node_modules
-node_js:
-  - v11
-  - v10
-  - v8
-script: yarn test-ci
+
+install:
+  - travis_retry yarn
+
+jobs:
+  include:
+    - stage: test
+      name: "Test"
+      node_js: lts/*
+      script: yarn test-ci
+    
+    - stage: release
+      name: "Release"
+      if: branch = master
+      node_js: lts/*
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npx semantic-release

@@ -6,254 +6,213 @@ const mkdirp = require("mkdirp");
 const path = require("path");
 const _ = require("lodash");
 const exec = require("child_process").exec;
-const gitConfig = require("git-config");
-
-const licenses = [
-  { name: "Apache 2.0", value: "Apache-2.0" },
-  { name: "MIT", value: "MIT" },
-  { name: "Mozilla Public License 2.0", value: "MPL-2.0" },
-  { name: "BSD 2-Clause (FreeBSD) License", value: "BSD-2-Clause-FreeBSD" },
-  { name: "BSD 3-Clause (NewBSD) License", value: "BSD-3-Clause" },
-  { name: "Internet Systems Consortium (ISC) License", value: "ISC" },
-  { name: "GNU AGPL 3.0", value: "AGPL-3.0" },
-  { name: "GNU GPL 3.0", value: "GPL-3.0" },
-  { name: "GNU LGPL 3.0", value: "LGPL-3.0" },
-  { name: "Unlicense", value: "unlicense" },
-  { name: "No License (Copyrighted)", value: "UNLICENSED" }
-];
-
-const getLicenseValue = name => {
-  for (const item of licenses) {
-    if (item.name === name) {
-      return item.value;
-    }
-  }
-};
-
-var gitConfigs = gitConfig.sync();
+const promptBuilder = require("./src/prompts").promptBuilder;
+const getLicenseValue = require("./src/prompts").getLicenseValue;
+const buildPackageJSON = require("./src/package-builder").buildPackageJSON;
 
 module.exports = class extends Generator {
-  prompting() {
-    this.log(yosay(`Welcome to the groundbreaking ${chalk.red("generator-ansible")} generator!`));
+	constructor(args, opts) {
+		super(args, opts);
+		this.argument("role-name", {
+			type: String,
+			alias: "name",
+			desc: "Name of the role",
+			required: false
+		});
+		this.argument("driver-name", {
+			type: String,
+			alias: "driver",
+			desc: "Driver to use for this role (NOT IMPLEMENTED)",
+			required: false
+		});
+		this.argument("prefix-path", {
+			type: String,
+			alias: "path",
+			desc:
+				"Path to prefix onto the install location of the created ansible role",
+			required: false
+		});
+		this.option("include-molecule");
+		this.option("include-meta");
+	}
 
-    const basicQuestionsPrompts = [
-      {
-        type: "text",
-        name: "roleName",
-        message: "What is the name of this role?"
-      },
-      {
-        type: "text",
-        name: "description",
-        message: "What is the description for this role?"
-      },
-      {
-        type: "list",
-        name: "license",
-        message: "What is the license for this role?",
-        choices: licenses.map(item => item.name)
-      }
-    ];
+	initializing() {}
 
-    const gitCredentialsPrompts = [
-      {
-        type: "text",
-        name: "gitAuthorName",
-        message: "What is your name (Will be used in  the meta file and package.json)?",
-        default: gitConfigs.user.name
-      },
-      {
-        type: "text",
-        name: "gitAuthorEmail",
-        message: "What is your email (Will be used in  the meta file and package.json)?",
-        default: gitConfigs.user.email
-      },
-      {
-        type: "confirm",
-        name: "gitIncludeRepoUrl",
-        message: "Would you like to include a repository in the package.json?",
-        default: true
-      },
-      {
-        when: response => {
-          return response.gitIncludeRepoUrl;
-        },
-        type: "text",
-        name: "gitRepoUrl",
-        message: "What is your email (Will be used in  the meta file and package.json)?"
-      }
-    ];
+	prompting() {
+		this.log(
+			yosay(
+				`Welcome to the groundbreaking ${chalk.red(
+					"ansible-molecule"
+				)} generator!`
+			)
+		);
 
-    const moleculePrompts = [
-      {
-        type: "confirm",
-        name: "includeMolecule",
-        message: "Would you like to include the molecule testing boilerplate?",
-        default: false
-      },
-      {
-        when: response => {
-          return response.includeMolecule;
-        },
-        type: "confirm",
-        name: "includeCircleCi",
-        message: "Would you like to include a basic circle ci config for molecule?",
-        default: true
-      }
-    ];
+		return this.prompt(promptBuilder(this.options)).then(props => {
+			this.props = props;
+		});
+	}
 
-    const metaPrompts = [
-      {
-        type: "confirm",
-        name: "includeMeta",
-        message: "Would you like to include the meta folder?",
-        default: false
-      },
-      {
-        when: response => {
-          return response.includeMeta;
-        },
-        type: "text",
-        name: "metaCompany",
-        message: "What is the company for this role?"
-      }
-    ];
+	configuring() {
+		// Setting arguments into props
+		if (this.options["role-name"] !== undefined)
+      this.props["roleName"] = this.options["role-name"];
+    if (this.options["driver-name"] !== undefined)
+			this.log("[IGNORED] OPTION driver-name IS NOT YET IMPLEMENTED")
 
-    const prompts = [
-      ...basicQuestionsPrompts,
-      ...gitCredentialsPrompts,
-      ...moleculePrompts,
-      ...metaPrompts
-    ];
+		// Setting options into props
+		if (this.options["include-molecule"])
+			this.props.includeMolecule = this.options["include-molecule"];
+		if (this.options["include-meta"])
+      this.props.includeMeta = this.options["include-meta"];
 
-    return this.prompt(prompts).then(props => {
-      this.props = props;
-    });
-  }
+		if (this.options["prefix-path"] !== undefined) {
+			try {
+				this.props.roleRoot = path.join(this.options["prefix-path"], this.props.roleName);
+			} catch (err) {
+				if (this.options.debug) this.log(err);
+				this.log(
+					"Error encountered trying to parse prefix argument, defaulting too no prefix"
+				);
+				this.props.roleRoot = path.join(this.props.roleName);
+			}
+		} else {
+			this.props.roleRoot = path.join(this.props.roleName);
+		}
 
-  default() {
-    // Folder root
-    const roleRoot = `./${this.props.roleName}`;
-    this.props.roleRoot = roleRoot;
-    mkdirp.sync(roleRoot);
-    this.fs.copy(this.templatePath("root-files"), roleRoot);
-    this.fs.copy(this.templatePath("root-files/.**"), roleRoot);
+		const roleRoot = this.props.roleRoot;
 
-    // CIRCLECI
-    if (this.props.includeCircleCi) {
-      mkdirp.sync(path.join(roleRoot, ".circleci"));
-      this.fs.copy(this.templatePath(".circleci"), path.join(roleRoot, ".circleci"));
-    }
+		// CIRCLECI
+		if (this.props.includeCircleCi) {
+			mkdirp.sync(path.join(roleRoot, ".circleci"));
+			this.fs.copy(
+				this.templatePath(".circleci"),
+				path.join(roleRoot, ".circleci")
+			);
+		}
+	}
 
-    // DEFAULTS
-    mkdirp.sync(path.join(roleRoot, "defaults"));
-    this.fs.copy(this.templatePath("defaults"), path.join(roleRoot, "defaults"));
+	default() {
+		const roleRoot = this.props.roleRoot;
 
-    // HANDLERS
-    mkdirp.sync(path.join(roleRoot, "handlers"));
-    this.fs.copy(this.templatePath("handlers"), path.join(roleRoot, "handlers"));
+		const filePaths = [
+			{
+				mkPath: roleRoot,
+				src: this.templatePath("root-files"),
+				dest: roleRoot
+			},
+			{
+				src: this.templatePath("root-files/.**"),
+				dest: roleRoot
+			},
+			{
+				mkPath: path.join(roleRoot, "defaults"),
+				src: this.templatePath("defaults"),
+				dest: path.join(roleRoot, "defaults")
+			},
+			{
+				mkPath: path.join(roleRoot, "defaults"),
+				src: this.templatePath("handlers"),
+				dest: path.join(roleRoot, "handlers")
+			},
+			{
+				mkPath: path.join(roleRoot, "defaults"),
+				src: this.templatePath("tasks"),
+				dest: path.join(roleRoot, "tasks")
+			},
+			{
+				mkPath: path.join(roleRoot, "defaults"),
+				src: this.templatePath("vars"),
+				dest: path.join(roleRoot, "vars")
+			}
+		];
 
-    // TASKS
-    mkdirp.sync(path.join(roleRoot, "tasks"));
-    this.fs.copy(this.templatePath("tasks"), path.join(roleRoot, "tasks"));
+		// Copying file paths
+		filePaths.forEach(item => {
+			if (item.mkPath !== undefined) mkdirp.sync(item.mkPath);
+			this.fs.copy(item.src, item.dest);
+		});
+	}
 
-    // VARS
-    mkdirp.sync(path.join(roleRoot, "vars"));
-    this.fs.copy(this.templatePath("vars"), path.join(roleRoot, "vars"));
-  }
+	writing() {
+		const roleRoot = this.props.roleRoot;
 
-  writing() {
-    const roleRoot = `./${this.props.roleName}`;
+		const templates = [
+			{
+				when: this.props.includeMolecule,
+				mkPath: path.join(roleRoot, "molecule/default/tests"),
+				tmpPath: this.templatePath("molecule/default/playbook.yml"),
+				dest: path.join(roleRoot, "molecule/default/playbook.yml"),
+				data: { roleName: this.props.roleName }
+			},
+			{
+				tmpPath: this.templatePath("root-files/README.md"),
+				dest: path.join(roleRoot, "README.md"),
+				data: {
+					roleName: this.props.roleName,
+					authorName: this.props.gitAuthorName,
+					authorEmail: this.props.gitAuthorEmail
+				}
+			},
+			{
+				tmpPath: this.templatePath("root-files/run-test.sh"),
+				dest: path.join(roleRoot, "run-test.sh"),
+				data: {
+					roleName: this.props.roleName
+				}
+			},
+			{
+				when: this.props.includeMeta,
+				tmpPath: this.templatePath("meta/main.yml"),
+				dest: path.join(roleRoot, "meta/main.yml"),
+				data: {
+					authorName: this.props.gitAuthorName,
+					description: this.props.description,
+					metaCompany: this.props.metaCompany,
+					metaLicence: getLicenseValue(this.props.license)
+				}
+			}
+		];
 
-    // MOLECULE
-    if (this.props.includeMolecule) {
-      mkdirp.sync(path.join(roleRoot, "molecule/default/tests"));
-      this.fs.copy(this.templatePath("molecule"), path.join(roleRoot, "molecule"));
-      const playbookTemplate = _.template(
-        this.fs.read(this.templatePath("molecule/default/playbook.yml"))
-      );
-      this.fs.write(
-        path.join(roleRoot, "molecule/default/playbook.yml"),
-        playbookTemplate({
-          roleName: this.props.roleName
-        })
-      );
-    }
+		// Pre template tasks
+		// MOLECULE
+		if (this.props.includeMolecule) {
+			this.fs.copy(
+				this.templatePath("molecule"),
+				path.join(roleRoot, "molecule")
+			);
+		}
 
-    const readMeTemplate = _.template(this.fs.read(this.templatePath("root-files/README.md")));
-    this.fs.write(
-      path.join(roleRoot, "README.md"),
-      readMeTemplate({
-        roleName: this.props.roleName,
-        authorName: this.props.gitAuthorName,
-        authorEmail: this.props.gitAuthorEmail
-      })
-    );
-    const runScriptTemplate = _.template(this.fs.read(this.templatePath("root-files/run-test.sh")));
-    this.fs.write(
-      path.join(roleRoot, "run-test.sh"),
-      runScriptTemplate({
-        roleName: this.props.roleName
-      })
-    );
+		// Process templates
+		templates.forEach(item => {
+			if (item.when || item.when === undefined) {
+				if (item.mkPath !== undefined) mkdirp.sync(item.mkPath);
+				const template = _.template(this.fs.read(item.tmpPath));
+				this.fs.write(item.dest, template(item.data));
+			}
+		});
 
-    // META
-    if (this.props.includeMeta) {
-      const metaTemplate = _.template(this.fs.read(this.templatePath("meta/main.yml")));
-      this.fs.write(
-        path.join(roleRoot, "meta/main.yml"),
-        metaTemplate({
-          authorName: this.props.gitAuthorName,
-          description: this.props.description,
-          metaCompany: this.props.metaCompany,
-          metaLicence: getLicenseValue(this.props.license)
-        })
-      );
-    }
+		this.fs.writeJSON(
+			path.join(roleRoot, "package.json"),
+			buildPackageJSON(this.props)
+		);
+	}
 
-    // Package.json
-    let pkgTemplate = {
-      name: this.props.roleName,
-      version: "1.0.0",
-      main: "index.js",
-      repository: this.props.gitIncludeRepoUrl ? this.props.gitRepoUrl : "",
-      description: this.props.description,
-      author: this.props.gitAuthorName,
-      license: getLicenseValue(this.props.license),
-      dependencies: {},
-      scripts: {
-        venv: "virtualenv venv",
-        "venv-activate": "source venv/bin/activate",
-        requirements: "pip install -r requirements.txt"
-      }
-    };
-    if (this.props.includeMolecule) {
-      pkgTemplate = {
-        ...pkgTemplate,
-        ...{
-          check: "molecule check",
-          converge: "molecule converge",
-          create: "molecule create",
-          dependency: "molecule dependency",
-          destroy: "molecule destroy",
-          idempotence: "molecule idempotence",
-          lint: "molecule lint",
-          list: "molecule list",
-          login: "molecule login",
-          matrix: "molecule matrix",
-          prepare: "molecule prepare",
-          "side-effect": "molecule side-effect",
-          syntax: "molecule syntax",
-          test: "molecule test",
-          verify: "molecule verify"
-        }
-      };
-    }
-    this.fs.writeJSON(path.join(roleRoot, "package.json"), pkgTemplate);
-  }
+	install() {
+		// Fixing permissions
+		exec(
+			`chmod +x ${path.join(
+				this.destinationRoot(),
+				this.props.roleRoot,
+				"run-test.sh"
+			)}`
+		);
+	}
 
-  install() {
-    // Fixing permissions
-    exec(`chmod +x ${path.join(this.destinationRoot(), this.props.roleRoot, "run-test.sh")}`);
-  }
+	end() {
+		this.log(
+			yosay(
+				`All done! Created a new role called ${chalk.red(this.props.roleName)}!`
+			)
+		);
+	}
 };
