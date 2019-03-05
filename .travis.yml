@@ -1,4 +1,8 @@
 language: node_js
+node_js:
+  - "v11"
+  - "v10"
+  - "v8"
 
 jobs:
   include:
@@ -6,16 +10,11 @@ jobs:
       cache:
         directories:
           - node_modules
-      node_js:
-        - "v11"
-        - "v10"
-        - "v8"
+      
       script: yarn test-ci
 
     - stage: "NPM release"
       branches:
         only:
           - master
-      node_js:
-        - "v10"
       script: npm run semantic-release
