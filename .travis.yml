@@ -9,20 +9,13 @@ install:
 
 jobs:
   include:
-    - stage: test
-      name: "Test"
-      node_js: lts/*
-      script: yarn test-ci
+    # - stage: test
+    #   name: "Test"
+    #   node_js: lts/*
+    #   script: yarn test-ci
     
     - stage: release
       name: "Release"
       if: branch = master
       node_js: lts/*
-      install: skip
-      script: skip
-      deploy:
-        provider: script
-        skip_cleanup: true
-        script:
-          - yarn global add semantic-release
-          - semantic-release
+      script: semantic-release
