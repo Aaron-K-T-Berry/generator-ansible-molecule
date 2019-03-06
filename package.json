@@ -40,7 +40,7 @@
 		"commit": "git-cz",
 		"yo-ansible-molecule": "node_modules/.bin/yo ansible-molecule ",
 		"test": "node_modules/.bin/jest",
-		"test-ci": "scripts/test-ci.sh",
+		"test-ci": "bash scripts/test-ci.sh",
 		"test-dep": "snyk test",
 		"semantic-release": "semantic-release"
 	},
