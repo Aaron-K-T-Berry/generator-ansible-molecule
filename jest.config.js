@@ -1,3 +1,5 @@
 module.exports = {
-  collectCoverage: true
+	collectCoverage: true,
+	testPathIgnorePatterns: ["/node_modules/", "__tests__/__data__"],
+	collectCoverageFrom: ["generators/**"],
 };
