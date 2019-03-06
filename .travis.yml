@@ -20,6 +20,7 @@ jobs:
       name: "Release"
       if: branch = master
       node_js: lts/*
+      script: skip
       deploy:
         provider: script
         skip_cleanup: true
