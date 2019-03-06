@@ -23,14 +23,14 @@ const getLicenseValue = name => {
 	}
 };
 
-const promptBuilder = (options) => {
+const promptBuilder = options => {
 	// BASIC
 	const basicQuestionsPrompts = [
 		{
-      when: options["role-name"] === undefined,
+			when: options["role-name"] === undefined,
 			type: "text",
 			name: "roleName",
-      message: "What is the name of this role?",
+			message: "What is the name of this role?"
 		},
 		{
 			type: "text",
@@ -43,8 +43,8 @@ const promptBuilder = (options) => {
 			message: "What is the license for this role?",
 			choices: licenses.map(item => item.name)
 		}
-  ];  
-  
+	];
+
 	// GIT
 	const gitCredentialsPrompts = [
 		{
@@ -81,16 +81,16 @@ const promptBuilder = (options) => {
 	// MOLECULE
 	const moleculePrompts = [
 		{
-      when: options["include-molecule"] === undefined,
+			when: options["include-molecule"] === undefined,
 			type: "confirm",
 			name: "includeMolecule",
 			message: "Would you like to include the molecule testing boilerplate?",
 			default: false
 		},
 		{
-			when: (response => {
-				return response.includeMolecule;
-			}) || options["include-molecule"],
+			when: response => {
+				return response.includeMolecule || options["include-molecule"];
+			},
 			type: "confirm",
 			name: "includeCircleCi",
 			message:
@@ -102,32 +102,32 @@ const promptBuilder = (options) => {
 	// META
 	const metaPrompts = [
 		{
-      when: options["include-meta"] === undefined,
+			when: options["include-meta"] === undefined,
 			type: "confirm",
 			name: "includeMeta",
 			message: "Would you like to include the meta folder?",
 			default: false
 		},
 		{
-			when: (response => {
-				return response.includeMeta;
-			}) || options["include-meta"],
+			when: response => {
+				return response.includeMeta || options["include-meta"];
+			},
 			type: "text",
 			name: "metaCompany",
 			message: "What is the company for this role?"
 		}
-  ];
-  
-  return [
+	];
+
+	return [
 		...basicQuestionsPrompts,
 		...gitCredentialsPrompts,
 		...moleculePrompts,
 		...metaPrompts
-	]
+	];
 };
 
 module.exports = {
 	licenses,
 	getLicenseValue,
-	promptBuilder,
+	promptBuilder
 };
