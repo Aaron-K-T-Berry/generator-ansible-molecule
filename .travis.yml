@@ -7,13 +7,14 @@ cache:
 install:
   - travis_retry yarn
 
+script: yarn test-ci
+
 jobs:
   include:
     - stage: test
       if: branch != master
       name: "Test"
       node_js: lts/*
-      script: yarn test-ci
     
     - stage: release
       name: "Release"
