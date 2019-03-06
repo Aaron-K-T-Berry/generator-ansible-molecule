@@ -1,6 +1,6 @@
 {
 	"name": "generator-ansible-molecule",
-	"description": "",
+	"description": "Yeoman generator to create ansible roles with molecule as a testing framework",
 	"keywords": [
     "yeoman-generator",
     "generator",
@@ -40,18 +40,13 @@
 		"commit": "git-cz",
 		"yo-ansible-molecule": "node_modules/.bin/yo ansible-molecule ",
 		"test": "node_modules/.bin/jest",
-		"test-ci": "node_modules/.bin/jest --coverage --coverageReporters=text-lcov | coveralls",
+		"test-ci": "scripts/test-ci.sh",
 		"test-dep": "snyk test",
 		"semantic-release": "semantic-release"
 	},
 	"config": {
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
-		}
-	},
-	"release": {
-		"verifyConditions": {
-			"path": "./node_modules/semantic-release/src/lib/plugin-noop.js"
 		}
 	}
 }
