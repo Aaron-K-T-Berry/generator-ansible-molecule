@@ -13,27 +13,27 @@ const buildPackageJSON = require("./src/package-builder").buildPackageJSON;
 module.exports = class extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
-		this.argument("role-name", {
-			type: String,
-			alias: "name",
-			desc: "Name of the role",
-			required: false
-		});
-		this.argument("driver-name", {
-			type: String,
-			alias: "driver",
-			desc: "Driver to use for this role (NOT IMPLEMENTED)",
-			required: false
-		});
-		this.argument("prefix-path", {
-			type: String,
-			alias: "path",
-			desc:
-				"Path to prefix onto the install location of the created ansible role",
-			required: false
-		});
-		this.option("include-molecule");
-		this.option("include-meta");
+		// this.argument("role-name", {
+		// 	type: String,
+		// 	alias: "name",
+		// 	desc: "Name of the role",
+		// 	required: false
+		// });
+		// this.argument("driver-name", {
+		// 	type: String,
+		// 	alias: "driver",
+		// 	desc: "Driver to use for this role (NOT IMPLEMENTED)",
+		// 	required: false
+		// });
+		// this.argument("prefix-path", {
+		// 	type: String,
+		// 	alias: "path",
+		// 	desc:
+		// 		"Path to prefix onto the install location of the created ansible role",
+		// 	required: false
+		// });
+		// this.option("include-molecule");
+		// this.option("include-meta");
 	}
 
 	initializing() {}
@@ -53,32 +53,36 @@ module.exports = class extends Generator {
 	}
 
 	configuring() {
-		// Setting arguments into props
-		if (this.options["role-name"] !== undefined)
-      this.props["roleName"] = this.options["role-name"];
-    if (this.options["driver-name"] !== undefined)
-			this.log("[IGNORED] OPTION driver-name IS NOT YET IMPLEMENTED")
+		// // Setting arguments into props
+		// if (this.options["role-name"] !== undefined)
+		// 	this.props["roleName"] = this.options["role-name"];
+		// if (this.options["driver-name"] !== undefined)
+		// 	this.log("[IGNORED] OPTION driver-name IS NOT YET IMPLEMENTED");
 
-		// Setting options into props
-		if (this.options["include-molecule"])
-			this.props.includeMolecule = this.options["include-molecule"];
-		if (this.options["include-meta"])
-      this.props.includeMeta = this.options["include-meta"];
+		// // Setting options into props
+		// if (this.options["include-molecule"])
+		// 	this.props.includeMolecule = this.options["include-molecule"];
+		// if (this.options["include-meta"])
+		// 	this.props.includeMeta = this.options["include-meta"];
 
-		if (this.options["prefix-path"] !== undefined) {
-			try {
-				this.props.roleRoot = path.join(this.options["prefix-path"], this.props.roleName);
-			} catch (err) {
-				if (this.options.debug) this.log(err);
-				this.log(
-					"Error encountered trying to parse prefix argument, defaulting too no prefix"
-				);
-				this.props.roleRoot = path.join(this.props.roleName);
-			}
-		} else {
-			this.props.roleRoot = path.join(this.props.roleName);
-		}
-
+		// if (this.options["prefix-path"] !== undefined) {
+		// 	try {
+		// 		this.props.roleRoot = path.join(
+		// 			this.options["prefix-path"],
+		// 			this.props.roleName
+		// 		);
+		// 	} catch (err) {
+		// 		if (this.options.debug) this.log(err);
+		// 		this.log(
+		// 			"Error encountered trying to parse prefix argument, defaulting too no prefix"
+		// 		);
+		// 		this.props.roleRoot = path.join(this.props.roleName);
+		// 	}
+		// } else {
+		// 	this.props.roleRoot = path.join(this.props.roleName);
+		// }
+    // TODO remover when opts put back in
+    this.props.roleRoot = path.join(this.props.roleName);
 		const roleRoot = this.props.roleRoot;
 
 		// CIRCLECI
@@ -110,17 +114,17 @@ module.exports = class extends Generator {
 				dest: path.join(roleRoot, "defaults")
 			},
 			{
-				mkPath: path.join(roleRoot, "defaults"),
+				mkPath: path.join(roleRoot, "handlers"),
 				src: this.templatePath("handlers"),
 				dest: path.join(roleRoot, "handlers")
 			},
 			{
-				mkPath: path.join(roleRoot, "defaults"),
+				mkPath: path.join(roleRoot, "tasks"),
 				src: this.templatePath("tasks"),
 				dest: path.join(roleRoot, "tasks")
 			},
 			{
-				mkPath: path.join(roleRoot, "defaults"),
+				mkPath: path.join(roleRoot, "vars"),
 				src: this.templatePath("vars"),
 				dest: path.join(roleRoot, "vars")
 			}

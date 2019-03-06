@@ -25,7 +25,7 @@ yo ansible-molecule
 
 And follow the prompts to create a new ansible role.
 
-Some optional arguments available.
+<!-- Some optional arguments available.
 
 | Option               | Description                                          | Type   |
 | -------------------- | ---------------------------------------------------- | ------ |
@@ -33,7 +33,9 @@ Some optional arguments available.
 | `driver-name`        | driver type to use for molecule (Currently not used) | string |
 | `prefix-path`        | path from cwd to create the new role                 | string |
 | `--include-molecule` | Skip include molecule prompt                         |        |
-| `--include-meta`     | Skip include meta prompt                             |        |
+| `--include-meta`     | Skip include meta prompt                             |        | 
+
+-->
 
 ### Support
 
@@ -45,11 +47,9 @@ Currently this generator is being tested against the following node versions.
 
 Feel free to post issues, and create prs with an changes, fixes or enhancements.
 
-<!-- TODO [TESTS] Increase test coverage -->
-<!-- TODO [TESTS] Split up tests more logically -->
-<!-- TODO [CICD] Add more ci cd options aim for all free ones on github marketplace -->
+<!-- TODO [OPTS+ARGS] Add options and args for use to skip prompts -->
+<!-- TODO [MOLECULE] Add more ci cd options aim for all free ones on github marketplace -->
 <!-- TODO [MOLECULE] Implement molecule driver opts -->
 <!-- TODO [MOLECULE] Add more molecule driver opts -->
 <!-- TODO [MOLECULE] Cleanup optional molecule files -->
-<!-- TODO [REPO] Add semantic release to ci pipeline -->
-<!-- TODO [DRIVER] Add prompts for different driver opts -->
+<!-- TODO [MOLECULE] Add prompts for different driver opts -->
