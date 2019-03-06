@@ -123,7 +123,7 @@ describe("index.js", () => {
 			paths = [
 				path.join(roleRoot, ".circleci"),
 				path.join(roleRoot, "molecule", "default", "Dockerfile.j2"),
-				path.join(roleRoot, "molecule", "default", "INSTALL.RST"),
+				path.join(roleRoot, "molecule", "default", "INSTALL.rst"),
 				path.join(roleRoot, "molecule", "default", "molecule.yml"),
 				path.join(roleRoot, "molecule", "default", "playbook.yml"),
 				path.join(roleRoot, "molecule", "default", "tests", "test_default.pyc"),
