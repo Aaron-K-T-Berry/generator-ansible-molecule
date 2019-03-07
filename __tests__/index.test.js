@@ -4,6 +4,19 @@ const assert = require("yeoman-assert");
 const fs = require("fs");
 
 // TODO create more generic test helper functions
+const assertPaths = paths => {
+	for (item of paths) {
+		assert.file(item);
+	}
+};
+
+const assertContent = paths => {
+	for (item of paths) {
+		for (check of item.contains) {
+			assert.fileContent(item.path, check);
+		}
+	}
+};
 
 const defaultPrompts = {
 	// BASIC
@@ -44,10 +57,7 @@ describe("index.js", () => {
 				path.join(roleRoot, "requirements.txt"),
 				path.join(roleRoot, "run-test.sh")
 			];
-
-			for (item of paths) {
-				assert.file(item);
-			}
+			assertPaths(paths);
 		});
 
 		it("Should have the correct content for each file", () => {
@@ -76,12 +86,7 @@ describe("index.js", () => {
 					]
 				}
 			];
-
-			for (item of paths) {
-				for (check of item.contains) {
-					assert.fileContent(item.path, check);
-				}
-			}
+			assertContent(paths);
 		});
 	});
 
@@ -129,10 +134,7 @@ describe("index.js", () => {
 				path.join(roleRoot, "molecule", "default", "tests", "test_default.pyc"),
 				path.join(roleRoot, "molecule", "default", "tests", "test_default.py")
 			];
-
-			for (item of paths) {
-				assert.file(item);
-			}
+			assertPaths(paths);
 		});
 
 		it("Should have the correct content for each molecule file", () => {
@@ -142,12 +144,7 @@ describe("index.js", () => {
 					contains: [`- role: ${defaultPrompts.roleName}`]
 				}
 			];
-
-			for (item of paths) {
-				for (check of item.contains) {
-					assert.fileContent(item.path, check);
-				}
-			}
+			assertContent(paths);
 		});
 	});
 
@@ -161,10 +158,7 @@ describe("index.js", () => {
 
 		it("Should copy over all meta files", () => {
 			paths = [path.join(roleRoot, "meta", "main.yml")];
-
-			for (item of paths) {
-				assert.file(item);
-			}
+			assertPaths(paths);
 		});
 
 		it("Should have the correct content for each file", () => {
@@ -179,12 +173,7 @@ describe("index.js", () => {
 					]
 				}
 			];
-
-			for (item of paths) {
-				for (check of item.contains) {
-					assert.fileContent(item.path, check);
-				}
-			}
+			assertPaths(paths);
 		});
 	});
 });
