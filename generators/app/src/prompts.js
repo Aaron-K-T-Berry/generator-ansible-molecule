@@ -89,7 +89,7 @@ const promptBuilder = options => {
 		},
 		{
 			when: response => {
-				return response.includeMolecule || options["include-molecule"];
+				return response.includeMolecule || options["include-molecule"] !== undefined;
 			},
 			type: "confirm",
 			name: "includeCircleCi",

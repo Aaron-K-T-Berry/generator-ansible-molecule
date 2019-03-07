@@ -18,7 +18,6 @@ describe("prompts.js", () => {
 		const options = {
 			"role-name": undefined,
 			"include-molecule": undefined,
-			"include-molecule": undefined,
 			"include-meta": undefined
 		};
 

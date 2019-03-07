@@ -118,11 +118,11 @@ describe("index.js", () => {
 			includeCircleCi: true
 		};
 
-		beforeEach(() => {
+		beforeEach(() => {      
 			return helpers
 				.run(path.join(__dirname, "../generators/app"))
 				.withPrompts(prompts);
-		});
+    });
 
 		it("Should include all molecule files", () => {
 			paths = [
@@ -134,7 +134,10 @@ describe("index.js", () => {
 				path.join(roleRoot, "molecule", "default", "tests", "test_default.pyc"),
 				path.join(roleRoot, "molecule", "default", "tests", "test_default.py")
 			];
-			assertPaths(paths);
+      
+			for (item of paths) {
+				assert.file(item);
+			}
 		});
 
 		it("Should have the correct content for each molecule file", () => {
