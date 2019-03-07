@@ -48,6 +48,7 @@ Currently this generator is being tested against the following node versions.
 Feel free to post issues, and create prs with an changes, fixes or enhancements.
 
 <!-- TODO [OPTS+ARGS] Add options and args for use to skip prompts -->
+<!-- TODO [GIT] Look at using in built methods for default values -->
 <!-- TODO [MOLECULE] Add more ci cd options aim for all free ones on github marketplace -->
 <!-- TODO [MOLECULE] Implement molecule driver opts -->
 <!-- TODO [MOLECULE] Add more molecule driver opts -->
