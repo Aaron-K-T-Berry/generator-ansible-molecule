@@ -11,7 +11,7 @@ const options = [
 		name: "include-molecule",
 		options: {
 			type: Boolean,
-			description: "Skip the include molecule prompt"
+			description: "Skip the include molecule prompt",
 		},
 		propName: "includeMolecule"
 	},
@@ -19,10 +19,16 @@ const options = [
 		name: "include-meta",
 		options: {
 			type: Boolean,
-			description: "Skip the include meta prompt"
+			description: "Skip the include meta prompt",
 		},
 		propName: "includeMeta"
 	}
 ];
 
-module.exports = { options };
+const generateOptions = generator => {
+	for (option of options) {
+		generator.option(option.name, option.options);
+	}
+};
+
+module.exports = { generateOptions, options };

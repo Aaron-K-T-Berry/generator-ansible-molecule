@@ -11,4 +11,10 @@ const args = [
 	}
 ];
 
-module.exports = { args };
+const generateArgs = generator => {
+	for (arg of args) {
+		generator.argument(arg.name, arg.options);
+	}
+};
+
+module.exports = { generateArgs, args };
