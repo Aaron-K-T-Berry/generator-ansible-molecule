@@ -47,7 +47,16 @@ module.exports = class extends Generator {
 			}
 		}
 
-		this.props.roleRoot = path.join(this.props.roleName);
+		// Setting the root of the generated role
+		if (this.options["path-prefix"] !== undefined) {
+			this.props.roleRoot = path.join(
+				this.options["path-prefix"],
+				this.props.roleName
+			);
+		} else {
+			this.props.roleRoot = path.join(this.props.roleName);
+		}
+
 		const roleRoot = this.props.roleRoot;
 
 		// CIRCLECI
