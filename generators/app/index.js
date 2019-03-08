@@ -9,31 +9,14 @@ const exec = require("child_process").exec;
 const promptBuilder = require("./src/prompts").promptBuilder;
 const getLicenseValue = require("./src/prompts").getLicenseValue;
 const buildPackageJSON = require("./src/package-builder").buildPackageJSON;
+const optionHelper = require("./src/options");
+const argHelper = require("./src/arguments");
 
 module.exports = class extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
-		// this.argument("role-name", {
-		// 	type: String,
-		// 	alias: "name",
-		// 	desc: "Name of the role",
-		// 	required: false
-		// });
-		// this.argument("driver-name", {
-		// 	type: String,
-		// 	alias: "driver",
-		// 	desc: "Driver to use for this role (NOT IMPLEMENTED)",
-		// 	required: false
-		// });
-		// this.argument("prefix-path", {
-		// 	type: String,
-		// 	alias: "path",
-		// 	desc:
-		// 		"Path to prefix onto the install location of the created ansible role",
-		// 	required: false
-		// });
-		// this.option("include-molecule");
-		// this.option("include-meta");
+		optionHelper.generateOptions(this);
+		argHelper.generateArgs(this);
 	}
 
 	initializing() {}
@@ -53,36 +36,27 @@ module.exports = class extends Generator {
 	}
 
 	configuring() {
-		// // Setting arguments into props
-		// if (this.options["role-name"] !== undefined)
-		// 	this.props["roleName"] = this.options["role-name"];
-		// if (this.options["driver-name"] !== undefined)
-		// 	this.log("[IGNORED] OPTION driver-name IS NOT YET IMPLEMENTED");
+		// save options to props
+		const toProcess = [...optionHelper.options, ...argHelper.args];
+		for (let item of toProcess) {
+			if (
+				this.options[item.name] !== undefined &&
+				item.propName !== undefined
+			) {
+				this.props[item.propName] = this.options[item.name];
+			}
+		}
 
-		// // Setting options into props
-		// if (this.options["include-molecule"])
-		// 	this.props.includeMolecule = this.options["include-molecule"];
-		// if (this.options["include-meta"])
-		// 	this.props.includeMeta = this.options["include-meta"];
+		// Setting the root of the generated role
+		if (this.options["path-prefix"] !== undefined) {
+			this.props.roleRoot = path.join(
+				this.options["path-prefix"],
+				this.props.roleName
+			);
+		} else {
+			this.props.roleRoot = path.join(this.props.roleName);
+		}
 
-		// if (this.options["prefix-path"] !== undefined) {
-		// 	try {
-		// 		this.props.roleRoot = path.join(
-		// 			this.options["prefix-path"],
-		// 			this.props.roleName
-		// 		);
-		// 	} catch (err) {
-		// 		if (this.options.debug) this.log(err);
-		// 		this.log(
-		// 			"Error encountered trying to parse prefix argument, defaulting too no prefix"
-		// 		);
-		// 		this.props.roleRoot = path.join(this.props.roleName);
-		// 	}
-		// } else {
-		// 	this.props.roleRoot = path.join(this.props.roleName);
-		// }
-    // TODO remover when opts put back in
-    this.props.roleRoot = path.join(this.props.roleName);
 		const roleRoot = this.props.roleRoot;
 
 		// CIRCLECI
