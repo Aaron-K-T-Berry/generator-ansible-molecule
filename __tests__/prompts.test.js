@@ -1,5 +1,4 @@
 const prompts = require("../generators/app/src/prompts");
-// TODO try and inject responses object into namespace?
 
 describe("prompts.js", () => {
 	describe("getLicenseValue", () => {
@@ -18,7 +17,6 @@ describe("prompts.js", () => {
 	describe("promptBuilder", () => {
 		const options = {
 			"role-name": undefined,
-			"include-molecule": undefined,
 			"include-molecule": undefined,
 			"include-meta": undefined
 		};
