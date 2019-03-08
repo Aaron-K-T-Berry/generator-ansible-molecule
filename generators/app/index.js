@@ -6,17 +6,16 @@ const mkdirp = require("mkdirp");
 const path = require("path");
 const _ = require("lodash");
 const exec = require("child_process").exec;
-const promptBuilder = require("./src/prompts").promptBuilder;
-const getLicenseValue = require("./src/prompts").getLicenseValue;
+const prompts = require("./config/prompts").prompts;
+const helper = require("./src/helper");
 const buildPackageJSON = require("./src/package-builder").buildPackageJSON;
-const optionHelper = require("./src/options");
-const argHelper = require("./src/arguments");
+const args = require("./config/arguments").args;
+const options = require("./config/options").options;
 
 module.exports = class extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
-		optionHelper.generateOptions(this);
-		argHelper.generateArgs(this);
+		helper.generateOptions(this);
 	}
 
 	initializing() {}
@@ -30,14 +29,14 @@ module.exports = class extends Generator {
 			)
 		);
 
-		return this.prompt(promptBuilder(this.options)).then(props => {
+		return this.prompt(prompts(this.options)).then(props => {
 			this.props = props;
 		});
 	}
 
 	configuring() {
 		// save options to props
-		const toProcess = [...optionHelper.options, ...argHelper.args];
+		const toProcess = [...options, ...args];
 		for (let item of toProcess) {
 			if (
 				this.options[item.name] !== undefined &&
@@ -146,7 +145,7 @@ module.exports = class extends Generator {
 					authorName: this.props.gitAuthorName,
 					description: this.props.description,
 					metaCompany: this.props.metaCompany,
-					metaLicence: getLicenseValue(this.props.license)
+					metaLicence: helper.getLicenseValue(this.props.license)
 				}
 			}
 		];
