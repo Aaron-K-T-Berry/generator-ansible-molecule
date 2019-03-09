@@ -7,10 +7,6 @@
 
 Yeoman generator to create ansible roles with molecule testing framework including optional sample ci cd configs.
 
-# Generator-Ansible-Molecule
-
-Yeoman generator to create ansible roles with molecule testing framework including optional sample ci cd configs.
-
 ### Installation
 
 ```
@@ -33,7 +29,7 @@ And follow the prompts to create a new ansible role.
 | `driver-name`        | driver type to use for molecule (Currently not used) | string |
 | `prefix-path`        | path from cwd to create the new role                 | string |
 | `--include-molecule` | Skip include molecule prompt                         |        |
-| `--include-meta`     | Skip include meta prompt                             |        | 
+| `--include-meta`     | Skip include meta prompt                             |        |
 
 -->
 
@@ -48,8 +44,6 @@ Currently this generator is being tested against the following node versions.
 Feel free to post issues, and create prs with an changes, fixes or enhancements.
 
 <!-- TODO [GIT] Look at using in built methods for default values -->
-<!-- TODO [CONFIG] Moving expandable configs too a config folder -->
-<!-- TODO [CONFIG] Separate builder functions from config arrays -->
 <!-- TODO [MOLECULE] Add more ci cd options aim for all free ones on github marketplace -->
 <!-- TODO [MOLECULE] Implement molecule driver opts -->
 <!-- TODO [MOLECULE] Add more molecule driver opts -->
