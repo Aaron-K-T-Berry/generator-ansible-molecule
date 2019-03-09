@@ -116,46 +116,41 @@ describe("prompts.js", () => {
 					expect.assertions(2);
 					const opts = { ...options, "include-meta": "defined" };
 					const prom = prompts(opts);
-
-					expect(prom[9].name).toEqual("includeMeta");
-					expect(prom[9].when).toBeFalsy();
+					expect(prom[10].name).toEqual("includeMeta");
+					expect(prom[10].when).toBeFalsy();
 				});
 				it("undefined", () => {
 					expect.assertions(2);
 					const opts = { ...options };
 					const prom = prompts(opts);
 
-					expect(prom[9].name).toEqual("includeMeta");
-					expect(prom[9].when).toBeTruthy();
+					expect(prom[10].name).toEqual("includeMeta");
+					expect(prom[10].when).toBeTruthy();
 				});
       });
     
       it("include-meta defined   | includeMeta true", () => {
-				const response = { includeMeta: true };
 				const opts = { ...options, "include-meta": "defined" };
-				const prom = prompts(opts);
-				expect(prom[10].when(response)).toBeTruthy();
+        const prom = prompts(opts);        
+				expect(prom[10]).toBeTruthy();
 			});
 
 			it("include-meta defined   | includeMeta false", () => {
-				const response = { includeMeta: false };
 				const opts = { ...options, "include-meta": "defined" };
 				const prom = prompts(opts);
-				expect(prom[10].when(response)).toBeTruthy();
+				expect(prom[10]).toBeTruthy();
 			});
 
 			it("include-meta undefined | includeMeta true", () => {
-				const response = { includeMeta: true };
 				const opts = { ...options };
 				const prom = prompts(opts);
-				expect(prom[10].when(response)).toBeTruthy();
+				expect(prom[10]).toBeTruthy();
 			});
 
 			it("include-meta undefined | includeMeta false", () => {
-				const response = { includeMeta: false };
 				const opts = { ...options };
-				const prom = prompts(opts);
-				expect(prom[10].when(response)).toBeFalsy();
+        const prom = prompts(opts);        
+				expect(prom[10]).toBeTruthy();
 			});
 		});
 	});

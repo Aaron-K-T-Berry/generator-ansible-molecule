@@ -1,6 +1,7 @@
 const gitConfig = require("git-config");
 var gitConfigs = gitConfig.sync();
 const licenses = require("../config/licenses").licenses;
+const providers = require("../config/ci-providers").providers;
 
 const prompts = options => {
 	// BASIC
@@ -52,8 +53,7 @@ const prompts = options => {
 			},
 			type: "text",
 			name: "gitRepoUrl",
-			message:
-				"What is your email (Will be used in  the meta file and package.json)?"
+			message: "Url of repo?"
 		}
 	];
 
@@ -64,19 +64,25 @@ const prompts = options => {
 			type: "confirm",
 			name: "includeMolecule",
 			message: "Would you like to include the molecule testing boilerplate?",
-			default: false
+			default: true
 		},
 		{
 			when: response => {
-				return (
-					response.includeMolecule || options["include-molecule"] !== undefined
-				);
+				return response.includeMolecule || options["include-molecule"];
 			},
 			type: "confirm",
-			name: "includeCircleCi",
-			message:
-				"Would you like to include a basic circle ci config for molecule?",
+			name: "includeCi",
+			message: "Would you like to include a basic ci config?",
 			default: true
+		},
+		{
+			when: response => {
+				return response.includeCi;
+			},
+			type: "list",
+			name: "ciProvider",
+			message: "What ci config would you like to use?",
+			choices: providers.map(provider => provider.name)
 		}
 	];
 
