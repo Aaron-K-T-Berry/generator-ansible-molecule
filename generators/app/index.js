@@ -11,6 +11,8 @@ const helper = require("./src/helper");
 const buildPackageJSON = require("./src/package-builder").buildPackageJSON;
 const args = require("./config/arguments").args;
 const options = require("./config/options").options;
+const ciProvider = require("./config/ci-providers").providers;
+const fs = require("fs");
 
 module.exports = class extends Generator {
 	constructor(args, opts) {
@@ -57,13 +59,29 @@ module.exports = class extends Generator {
 		}
 
 		const roleRoot = this.props.roleRoot;
+		mkdirp.sync(roleRoot);
 
-		// CIRCLECI
-		if (this.props.includeCircleCi) {
-			mkdirp.sync(path.join(roleRoot, ".circleci"));
-			this.fs.copy(
-				this.templatePath(".circleci"),
-				path.join(roleRoot, ".circleci")
+		// CI
+		if (this.props.includeCi && this.props.ciProvider) {
+			const providerName = this.props.ciProvider;
+			const providerPath = ciProvider.filter(provider => {
+				if (provider.name === providerName) {
+					return provider;
+				}
+			})[0].path;
+			const fileName = ciProvider.filter(provider => {
+				if (provider.name === providerName) {
+					return provider;
+				}
+			})[0].fileName;
+
+			if (providerPath.length > 0) {
+				mkdirp.sync(path.join(roleRoot, providerPath));
+			}
+
+			this.fs.write(
+				path.join(roleRoot, providerPath, fileName),
+				this.fs.read(this.templatePath(path.join("ci", providerName, fileName)))
 			);
 		}
 	}

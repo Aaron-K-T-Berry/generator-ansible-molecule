@@ -117,7 +117,8 @@ describe("index.js", () => {
 			const prompts = {
 				...defaultPrompts,
 				includeMolecule: true,
-				includeCircleCi: true
+				includeCi: true,
+				ciProvider: "circleCi"
 			};
 			return helpers
 				.run(path.join(__dirname, "../generators/app"))
@@ -152,7 +153,8 @@ describe("index.js", () => {
 			const prompts = {
 				...defaultPrompts,
 				includeMolecule: true,
-				includeCircleCi: true
+				includeCi: true,
+				ciProvider: "circleCi"
 			};
 			return helpers
 				.run(path.join(__dirname, "../generators/app"))
@@ -167,15 +169,51 @@ describe("index.js", () => {
 					assertContent(paths);
 				});
 		});
+
+		describe("Generate a role with the correct ci provider", () => {
+			it("Should include a ci file for circleci", () => {
+				const prompts = {
+					...defaultPrompts,
+					includeMolecule: true,
+					includeCi: true,
+					ciProvider: "circleCi"
+				};
+
+				return helpers
+					.run(path.join(__dirname, "../generators/app"))
+					.withPrompts(prompts)
+					.then(() => {
+						paths = [path.join(roleRoot, ".circleci", "config.yml")];
+						assertPaths(paths);
+					});
+			});
+			it("Should include a ci file for travis", () => {
+				const prompts = {
+					...defaultPrompts,
+					includeMolecule: true,
+					includeCi: true,
+					ciProvider: "travis"
+				};
+
+				return helpers
+					.run(path.join(__dirname, "../generators/app"))
+					.withPrompts(prompts)
+					.then(() => {
+            paths = [path.join(roleRoot, ".travis.yml")];
+            expect(fs.lstatSync(path.join(roleRoot, ".travis.yml")).isFile()).toBeTruthy()            
+          });
+			});
+		});
 	});
 
 	describe("Generates a project with a meta folder", () => {
 		it("Should copy over all meta files", () => {
-			prompts = {
+			const prompts = {
 				...defaultPrompts,
 				includeMeta: true,
 				metaCompany: "company"
 			};
+
 			return helpers
 				.run(path.join(__dirname, "../generators/app"))
 				.withPrompts(prompts)
@@ -186,7 +224,7 @@ describe("index.js", () => {
 		});
 
 		it("Should have the correct content for each file", () => {
-			prompts = {
+			const prompts = {
 				...defaultPrompts,
 				includeMeta: true,
 				metaCompany: "company"
@@ -213,9 +251,10 @@ describe("index.js", () => {
 
 	describe("Generate a project using options and arguments", () => {
 		it("Generates a project with the correct files", () => {
-			prompts = {
+			const prompts = {
 				...defaultPrompts,
-				includeCircleCi: true
+				includeCi: true,
+				ciProvider: "circleCi"
 			};
 
 			opts = {
@@ -244,7 +283,7 @@ describe("index.js", () => {
 					assertPaths(paths);
 				});
 
-			// check content of files
+			// TODO check content of files
 		});
 	});
 });
