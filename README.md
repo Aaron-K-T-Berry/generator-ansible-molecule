@@ -33,7 +33,7 @@ Some options and arguments available.
 | `--driver-name`      | driver to use for molecule   | string  |
 | `--include-molecule` | Skip include molecule prompt | boolean |
 | `--include-meta`     | Skip include meta prompt     | boolean |
-
+   
 ### Support
 
 Currently this generator is being tested against the following node versions.
