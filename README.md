@@ -21,17 +21,17 @@ yo ansible-molecule
 
 And follow the prompts to create a new ansible role.
 
-<!-- Some optional arguments available.
+Some options and arguments available.
 
-| Option               | Description                                          | Type   |
-| -------------------- | ---------------------------------------------------- | ------ |
-| `role-name`          | name of the role                                     | string |
-| `driver-name`        | driver type to use for molecule (Currently not used) | string |
-| `prefix-path`        | path from cwd to create the new role                 | string |
-| `--include-molecule` | Skip include molecule prompt                         |        |
-| `--include-meta`     | Skip include meta prompt                             |        |
+| Arguments     | Description                          | Type   |
+| ------------- | ------------------------------------ | ------ |
+| `prefix-path` | path from cwd to create the new role | string |
 
--->
+| Options              | Description                  |
+| -------------------- | ---------------------------- |
+| `--role-name`        | Skip role name prompt        |
+| `--include-molecule` | Skip include molecule prompt |
+| `--include-meta`     | Skip include meta prompt     |
 
 ### Support
 
