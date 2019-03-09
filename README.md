@@ -42,6 +42,6 @@ Currently this generator is being tested against the following node versions.
 
 ### Contributing
 
-Feel free to post issues, and create prs with an changes, fixes or enhancements.
+Feel free to post issues, and create prs with an changes, fixes or enhancements.  
 
 <!-- TODO [CI-CD] Generate an role and test it with ansible for release builds -->
