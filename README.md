@@ -44,5 +44,4 @@ Currently this generator is being tested against the following node versions.
 
 Feel free to post issues, and create prs with an changes, fixes or enhancements.
 
-<!-- TODO [MOLECULE] Implement molecule driver opts with args and opts-->
 <!-- TODO [CI-CD] Generate an role and test it with ansible for release builds -->
