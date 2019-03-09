@@ -29,7 +29,7 @@ const defaultPrompts = {
 	gitIncludeRepoUrl: false,
 
 	// MOLECULE
-	includeMolecule: false,
+  includeMolecule: false,
 
 	// META
 	includeMeta: false
@@ -259,7 +259,8 @@ describe("index.js", () => {
 
 			opts = {
 				"role-name": "test1234",
-				"include-molecule": true,
+        "include-molecule": true,
+        "driver-name": "docker",
 				"include-meta": true
 			};
 			args = ["./testDir"];

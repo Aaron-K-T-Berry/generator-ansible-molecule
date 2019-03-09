@@ -27,11 +27,12 @@ Some options and arguments available.
 | ------------- | ------------------------------------ | ------ |
 | `prefix-path` | path from cwd to create the new role | string |
 
-| Options              | Description                  |
-| -------------------- | ---------------------------- |
-| `--role-name`        | Skip role name prompt        |
-| `--include-molecule` | Skip include molecule prompt |
-| `--include-meta`     | Skip include meta prompt     |
+| Options              | Description                  | Type    |
+| -------------------- | ---------------------------- | ------- |
+| `--role-name`        | Skip role name prompt        | string  |
+| `--driver-name`      | driver to use for molecule   | string  |
+| `--include-molecule` | Skip include molecule prompt | boolean |
+| `--include-meta`     | Skip include meta prompt     | boolean |
 
 ### Support
 
@@ -43,7 +44,4 @@ Currently this generator is being tested against the following node versions.
 
 Feel free to post issues, and create prs with an changes, fixes or enhancements.
 
-<!-- TODO [MOLECULE] Implement molecule driver opts -->
-<!-- TODO [MOLECULE] Add more molecule driver opts -->
-<!-- TODO [MOLECULE] Cleanup optional molecule files -->
-<!-- TODO [MOLECULE] Add prompts for different driver opts -->
+<!-- TODO [CI-CD] Generate an role and test it with ansible for release builds -->

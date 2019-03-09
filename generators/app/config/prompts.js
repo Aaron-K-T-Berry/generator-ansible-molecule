@@ -68,6 +68,26 @@ const prompts = options => {
 		},
 		{
 			when: response => {
+				return response.includeMolecule || options["driver-name"];
+			},
+			type: "list",
+			name: "moleculeDriver",
+			message: "What driver would you like molecule to use?",
+			default: "docker",
+			choices: [
+				"azure",
+				"delegated",
+				"docker",
+				"ec2",
+				"gce",
+				"lxc",
+				"lxd",
+				"openstack",
+				"vagrant"
+			]
+		},
+		{
+			when: response => {
 				return response.includeMolecule || options["include-molecule"];
 			},
 			type: "confirm",
