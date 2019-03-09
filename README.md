@@ -7,10 +7,6 @@
 
 Yeoman generator to create ansible roles with molecule testing framework including optional sample ci cd configs.
 
-# Generator-Ansible-Molecule
-
-Yeoman generator to create ansible roles with molecule testing framework including optional sample ci cd configs.
-
 ### Installation
 
 ```
