@@ -12,7 +12,7 @@ describe("package-builder.js", () => {
 		const optionalProps = {
 			gitIncludeRepoUrl: undefined,
 			gitRepoUrl: undefined,
-      includeMolecule: undefined,
+			includeMolecule: undefined
 		};
 
 		it("Should return a minimum package.json", () => {
@@ -36,7 +36,7 @@ describe("package-builder.js", () => {
 				...defaultProps,
 				includeMolecule: true,
 			};
-      const pkg = builder.buildPackageJSON(props);      
+      const pkg = builder.buildPackageJSON(props);
 			expect(pkg).toEqual(pkgExamples.full);
 		});
 	});
