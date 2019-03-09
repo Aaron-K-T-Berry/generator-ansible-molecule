@@ -133,13 +133,6 @@ module.exports = class extends Generator {
 
 		const templates = [
 			{
-				when: this.props.includeMolecule,
-				mkPath: path.join(roleRoot, "molecule/default/tests"),
-				tmpPath: this.templatePath("molecule/default/playbook.yml"),
-				dest: path.join(roleRoot, "molecule/default/playbook.yml"),
-				data: { roleName: this.props.roleName }
-			},
-			{
 				tmpPath: this.templatePath("root-files/README.md"),
 				dest: path.join(roleRoot, "README.md"),
 				data: {
@@ -168,11 +161,25 @@ module.exports = class extends Generator {
 			}
 		];
 
+		if (this.props.moleculeDriver) {
+			templates.push({
+				when: this.props.includeMolecule,
+				mkPath: path.join(roleRoot, "molecule/default/tests"),
+				tmpPath: this.templatePath(
+					"molecule",
+					this.props.moleculeDriver,
+					"default/playbook.yml"
+				),
+				dest: path.join(roleRoot, "molecule/default/playbook.yml"),
+				data: { roleName: this.props.roleName }
+			});
+		}
+
 		// Pre template tasks
 		// MOLECULE
 		if (this.props.includeMolecule) {
 			this.fs.copy(
-				this.templatePath("molecule"),
+				this.templatePath("molecule", this.props.moleculeDriver),
 				path.join(roleRoot, "molecule")
 			);
 		}
