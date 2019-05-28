@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.com/Aaron-K-T-Berry/generator-ansible-molecule.svg?branch=master)](https://travis-ci.com/Aaron-K-T-Berry/generator-ansible-molecule)
 [![Coverage Status](https://coveralls.io/repos/github/Aaron-K-T-Berry/generator-ansible-molecule/badge.svg?branch=master&service=github)](https://coveralls.io/github/Aaron-K-T-Berry/generator-ansible-molecule?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/Aaron-K-T-Berry/generator-ansible-molecule/badge.svg)](https://snyk.io/test/github/Aaron-K-T-Berry/generator-ansible-molecule)
-[![Greenkeeper badge](https://badges.greenkeeper.io/Aaron-K-T-Berry/generator-ansible-molecule.svg)](https://greenkeeper.io/)
 
 # Generator-Ansible-Molecule
 
@@ -33,7 +32,7 @@ Some options and arguments available.
 | `--driver-name`      | driver to use for molecule   | string  |
 | `--include-molecule` | Skip include molecule prompt | boolean |
 | `--include-meta`     | Skip include meta prompt     | boolean |
-   
+
 ### Support
 
 Currently this generator is being tested against the following node versions.
