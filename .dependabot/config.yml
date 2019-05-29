@@ -1,7 +1,12 @@
 version: 1
-
 update_configs:
-  - automerged_updates:
+
+  - package_manager: "javascript"
+    directory: "/node_modules"
+    update_schedule: "live"
+
+    automerged_updates:
       - match:
+          # Update all dev deps as they come in regardless of update type
           dependency_type: "development"
           update_type: "all"
