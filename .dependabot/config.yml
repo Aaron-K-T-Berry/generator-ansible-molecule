@@ -1,7 +1,7 @@
 version: 1
 
 update_configs:
-  automerged_updates:
-    - match:
-        dependency_type: "development"
-        update_type: "all"
+  - automerged_updates:
+      - match:
+          dependency_type: "development"
+          update_type: "all"
