@@ -1,4 +1,40 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.3
+version: v1.13.5
 ignore: {}
-patch: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-450202:
+    - yo > inquirer > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yeoman-generator > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yo > yeoman-environment > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yo > async > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yo > global-tunnel-ng > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yeoman-generator > yeoman-environment > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yeoman-generator > async > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yo > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yo > yeoman-environment > inquirer > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yeoman-generator > yeoman-environment > inquirer > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yeoman-generator > yeoman-environment > grouped-queue > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yo > insight > async > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yo > yeoman-doctor > global-tunnel-ng > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yo > yeoman-environment > grouped-queue > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yo > insight > inquirer > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
+    - yo > tabtab > inquirer > lodash:
+        patched: '2019-07-03T22:36:48.969Z'
