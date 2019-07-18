@@ -22,7 +22,7 @@
 		"lodash": "^4.17.11",
 		"mkdirp": "^0.5.1",
 		"yeoman-generator": "^4.0.0",
-		"yo": "^2.0.5",
+		"yo": "^3.1.0",
 		"yosay": "^2.0.2"
 	},
 	"devDependencies": {
@@ -32,7 +32,7 @@
 		"yeoman-assert": "^3.1.1",
 		"yeoman-generator": "^4.0.1",
 		"yeoman-test": "^2.0.0",
-		"yo": "^2.0.5",
+		"yo": "^3.1.0",
 		"semantic-release": "^15.13.3",
 		"snyk": "^1.135.1"
 	},
