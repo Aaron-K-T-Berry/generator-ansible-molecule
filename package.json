@@ -28,7 +28,7 @@
 	"devDependencies": {
 		"coveralls": "^3.0.3",
 		"cz-conventional-changelog": "3.1.0",
-		"jest": "^24.1.0",
+		"jest": "^25.1.0",
 		"semantic-release": "^17.0.0",
 		"snyk": "^1.135.1",
 		"yeoman-assert": "^3.1.1",
