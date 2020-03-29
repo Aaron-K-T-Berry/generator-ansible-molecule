@@ -18,21 +18,21 @@
 	"dependencies": {
 		"chalk": "^3.0.0",
 		"git-config": "0.0.7",
-		"global": "^4.3.2",
-		"lodash": "^4.17.11",
+		"global": "^4.4.0",
+		"lodash": "^4.17.15",
 		"mkdirp": "^1.0.3",
-		"yeoman-generator": "^4.0.1",
+		"yeoman-generator": "^4.7.2",
 		"yo": "^3.1.1",
 		"yosay": "^2.0.2"
 	},
 	"devDependencies": {
-		"coveralls": "^3.0.3",
+		"coveralls": "^3.0.11",
 		"cz-conventional-changelog": "3.1.0",
-		"jest": "^25.1.0",
-		"semantic-release": "^17.0.0",
+		"jest": "^25.2.4",
+		"semantic-release": "^17.0.4",
 		"yeoman-assert": "^3.1.1",
-		"yeoman-generator": "^4.0.1",
-		"yeoman-test": "^2.0.0",
+		"yeoman-generator": "^4.7.2",
+		"yeoman-test": "^2.3.0",
 		"yo": "^3.1.1"
 	},
 	"scripts": {
