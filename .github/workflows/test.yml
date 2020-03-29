@@ -17,6 +17,6 @@ jobs:
         with:
           node-version: 12
 
-      - run: npm install
+      - run: yarn
 
-      - run: npm test
+      - run: yarn run test
