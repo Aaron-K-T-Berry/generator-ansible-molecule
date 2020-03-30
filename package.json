@@ -28,6 +28,9 @@
 	"devDependencies": {
 		"coveralls": "^3.0.11",
 		"cz-conventional-changelog": "3.1.0",
+		"eslint": "^6.8.0",
+		"eslint-config-airbnb-base": "^14.1.0",
+		"eslint-plugin-import": "^2.20.2",
 		"jest": "^25.2.4",
 		"semantic-release": "^17.0.4",
 		"yeoman-assert": "^3.1.1",
@@ -41,7 +44,8 @@
 		"test": "node_modules/.bin/jest",
 		"test-ci": "bash scripts/test-ci.sh",
 		"test-dep": "snyk test",
-		"semantic-release": "semantic-release"
+		"semantic-release": "semantic-release",
+		"lint": "eslint"
 	},
 	"config": {
 		"commitizen": {
