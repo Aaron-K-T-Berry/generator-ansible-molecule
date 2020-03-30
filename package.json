@@ -45,7 +45,7 @@
 		"test-ci": "bash scripts/test-ci.sh",
 		"test-dep": "snyk test",
 		"semantic-release": "semantic-release",
-		"lint": "eslint"
+		"lint": "eslint generators"
 	},
 	"config": {
 		"commitizen": {
