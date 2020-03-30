@@ -20,6 +20,6 @@ jobs:
       - run: yarn
 
       - name: Set git credentials for test
-        run: git config –global user.name “John Smith”
+        run: git config --global user.name “John Smith”
 
       - run: yarn run test
