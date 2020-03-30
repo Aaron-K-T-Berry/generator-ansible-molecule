@@ -4,4 +4,4 @@ venv
 tmp
 yarn-error.log
 ignore
-.vscode/settings.json
+.vscode
